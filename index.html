@@ -1,519 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Habit Tracker</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #0f0f0f;
-            color: #e5e5e5;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-
-        .header p {
-            color: #a3a3a3;
-            font-size: 1.1rem;
-        }
-
-        .date-display {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 16px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .date-display h2 {
-            color: #60a5fa;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .add-habit {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .add-habit input {
-            flex: 1;
-            padding: 12px 16px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: #e5e5e5;
-            font-size: 1rem;
-        }
-
-        .add-habit input:focus {
-            outline: none;
-            border-color: #60a5fa;
-        }
-
-        .add-habit input::placeholder {
-            color: #666;
-        }
-
-        .add-btn {
-            padding: 12px 24px;
-            background: #60a5fa;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .add-btn:hover {
-            background: #3b82f6;
-        }
-
-        .progress-section {
-            margin-bottom: 30px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #333;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #60a5fa, #3b82f6);
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .progress-text {
-            text-align: center;
-            color: #a3a3a3;
-            font-size: 0.9rem;
-        }
-
-        .habits-list {
-            space-y: 12px;
-        }
-
-        .habit-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            transition: all 0.2s;
-        }
-
-        .habit-item:hover {
-            border-color: #444;
-        }
-
-        .habit-item.completed {
-            background: #0f2a1a;
-            border-color: #22c55e;
-        }
-
-        .habit-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #666;
-            border-radius: 4px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-
-        .habit-checkbox.checked {
-            background: #22c55e;
-            border-color: #22c55e;
-        }
-
-        .habit-checkbox.checked::after {
-            content: '✓';
-            color: white;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .habit-text {
-            flex: 1;
-            font-size: 1rem;
-        }
-
-        .habit-item.completed .habit-text {
-            text-decoration: line-through;
-            color: #a3a3a3;
-        }
-
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            padding: 4px;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-
-        .delete-btn:hover {
-            background: #2a1a1a;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-
-        .empty-state h3 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        /* Added custom modal styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 12px;
-            padding: 24px;
-            max-width: 400px;
-            width: 90%;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .modal-overlay.show .modal {
-            transform: scale(1);
-        }
-
-        .modal h3 {
-            color: #ffffff;
-            font-size: 1.2rem;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .modal-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 80px;
-        }
-
-        .modal-btn.cancel {
-            background: #333;
-            color: #e5e5e5;
-        }
-
-        .modal-btn.cancel:hover {
-            background: #444;
-        }
-
-        .modal-btn.confirm {
-            background: #ef4444;
-            color: white;
-        }
-
-        .modal-btn.confirm:hover {
-            background: #dc2626;
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                padding: 10px;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .add-habit {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Daily Habit Tracker</title>
+      <style>
+         * {
+         margin: 0;
+         padding: 0;
+         box-sizing: border-box;
+         }
+         body {
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+         background-color: #0f0f0f;
+         color: #e5e5e5;
+         min-height: 100vh;
+         padding: 20px;
+         }
+         .container {
+         max-width: 600px;
+         margin: 0 auto;
+         padding: 20px;
+         }
+         .header {
+         text-align: center;
+         margin-bottom: 40px;
+         }
+         .header h1 {
+         font-size: 2.5rem;
+         font-weight: 700;
+         color: #ffffff;
+         margin-bottom: 8px;
+         }
+         .header p {
+         color: #a3a3a3;
+         font-size: 1.1rem;
+         }
+         .date-display {
+         background: #1a1a1a;
+         border: 1px solid #333;
+         border-radius: 12px;
+         padding: 16px;
+         text-align: center;
+         margin-bottom: 30px;
+         }
+         .date-display h2 {
+         color: #60a5fa;
+         font-size: 1.2rem;
+         font-weight: 600;
+         }
+         .add-habit {
+         display: flex;
+         gap: 12px;
+         margin-bottom: 30px;
+         }
+         .add-habit input {
+         flex: 1;
+         padding: 12px 16px;
+         background: #1a1a1a;
+         border: 1px solid #333;
+         border-radius: 8px;
+         color: #e5e5e5;
+         font-size: 1rem;
+         }
+         .add-habit input:focus {
+         outline: none;
+         border-color: #60a5fa;
+         }
+         .add-habit input::placeholder {
+         color: #666;
+         }
+         .add-btn {
+         padding: 12px 24px;
+         background: #60a5fa;
+         color: white;
+         border: none;
+         border-radius: 8px;
+         font-weight: 600;
+         cursor: pointer;
+         transition: background-color 0.2s;
+         }
+         .add-btn:hover {
+         background: #3b82f6;
+         }
+         .progress-section {
+         margin-bottom: 30px;
+         }
+         .progress-bar {
+         width: 100%;
+         height: 8px;
+         background: #333;
+         border-radius: 4px;
+         overflow: hidden;
+         margin-bottom: 8px;
+         }
+         .progress-fill {
+         height: 100%;
+         background: linear-gradient(90deg, #60a5fa, #3b82f6);
+         transition: width 0.3s ease;
+         width: 0%;
+         }
+         .progress-text {
+         text-align: center;
+         color: #a3a3a3;
+         font-size: 0.9rem;
+         }
+         .habits-list {
+         space-y: 12px;
+         }
+         .habit-item {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+         padding: 16px;
+         background: #1a1a1a;
+         border: 1px solid #333;
+         border-radius: 8px;
+         margin-bottom: 12px;
+         transition: all 0.2s;
+         }
+         .habit-item:hover {
+         border-color: #444;
+         }
+         .habit-item.completed {
+         background: #0f2a1a;
+         border-color: #22c55e;
+         }
+         .habit-checkbox {
+         width: 20px;
+         height: 20px;
+         border: 2px solid #666;
+         border-radius: 4px;
+         cursor: pointer;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         transition: all 0.2s;
+         }
+         .habit-checkbox.checked {
+         background: #22c55e;
+         border-color: #22c55e;
+         }
+         .habit-checkbox.checked::after {
+         content: '✓';
+         color: white;
+         font-weight: bold;
+         font-size: 14px;
+         }
+         .habit-text {
+         flex: 1;
+         font-size: 1rem;
+         }
+         .habit-item.completed .habit-text {
+         text-decoration: line-through;
+         color: #a3a3a3;
+         }
+         .delete-btn {
+         background: none;
+         border: none;
+         color: #ef4444;
+         cursor: pointer;
+         padding: 4px;
+         border-radius: 4px;
+         transition: background-color 0.2s;
+         }
+         .delete-btn:hover {
+         background: #2a1a1a;
+         }
+         .empty-state {
+         text-align: center;
+         padding: 40px 20px;
+         color: #666;
+         }
+         .empty-state h3 {
+         font-size: 1.2rem;
+         margin-bottom: 8px;
+         }
+         /* Added custom modal styles */
+         .modal-overlay {
+         position: fixed;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: rgba(0, 0, 0, 0.8);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         z-index: 1000;
+         opacity: 0;
+         visibility: hidden;
+         transition: all 0.3s ease;
+         }
+         .modal-overlay.show {
+         opacity: 1;
+         visibility: visible;
+         }
+         .modal {
+         background: #1a1a1a;
+         border: 1px solid #333;
+         border-radius: 12px;
+         padding: 24px;
+         max-width: 400px;
+         width: 90%;
+         transform: scale(0.9);
+         transition: transform 0.3s ease;
+         }
+         .modal-overlay.show .modal {
+         transform: scale(1);
+         }
+         .modal h3 {
+         color: #ffffff;
+         font-size: 1.2rem;
+         margin-bottom: 16px;
+         text-align: center;
+         }
+         .modal-buttons {
+         display: flex;
+         gap: 12px;
+         justify-content: center;
+         }
+         .modal-btn {
+         padding: 10px 20px;
+         border: none;
+         border-radius: 6px;
+         font-weight: 600;
+         cursor: pointer;
+         transition: all 0.2s;
+         min-width: 80px;
+         }
+         .modal-btn.cancel {
+         background: #333;
+         color: #e5e5e5;
+         }
+         .modal-btn.cancel:hover {
+         background: #444;
+         }
+         .modal-btn.confirm {
+         background: #ef4444;
+         color: white;
+         }
+         .modal-btn.confirm:hover {
+         background: #dc2626;
+         }
+         .reset-btn {
+         margin-top: 12px;
+         padding: 10px 20px;
+         background: #333;
+         color: #e5e5e5;
+         border: none;
+         border-radius: 8px;
+         font-weight: 600;
+         cursor: pointer;
+         transition: background-color 0.2s;
+         width: 100%;
+         }
+         .reset-btn:hover {
+         background: #444;
+         }
+         @media (max-width: 640px) {
+         .container {
+         padding: 10px;
+         }
+         .header h1 {
+         font-size: 2rem;
+         }
+         .add-habit {
+         flex-direction: column;
+         }
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <div class="header">
             <h1>Curtain - Daily Habit Tracker</h1>
             <p>Build better habits, one day at a time</p>
-        </div>
-
-        <div class="date-display">
+         </div>
+         <div class="date-display">
             <h2 id="current-date"></h2>
-        </div>
-
-        <div class="add-habit">
+         </div>
+         <div class="add-habit">
             <input 
-                type="text" 
-                id="habit-input" 
-                placeholder="Add a new habit (e.g., Drink 8 glasses of water)"
-                maxlength="100"
-            >
+               type="text" 
+               id="habit-input" 
+               placeholder="Add a new habit (e.g., Drink 8 glasses of water)"
+               maxlength="100"
+               >
             <button class="add-btn" onclick="addHabit()">Add Habit</button>
-        </div>
-
-        <div class="progress-section">
+         </div>
+         <div class="progress-section">
             <div class="progress-bar">
-                <div class="progress-fill" id="progress-fill"></div>
+               <div class="progress-fill" id="progress-fill"></div>
             </div>
             <div class="progress-text" id="progress-text">0 of 0 habits completed</div>
-        </div>
-
-        <div class="habits-list" id="habits-list">
+            <button class="reset-btn" onclick="resetCompleted()">Reset</button>
+         </div>
+         <div class="habits-list" id="habits-list">
             <div class="empty-state">
-                <h3>No habits yet</h3>
-                <p>Add your first habit above to get started!</p>
+               <h3>No habits yet</h3>
+               <p>Add your first habit above to get started!</p>
             </div>
-        </div>
-    </div>
-
-    <!-- Added custom modal HTML -->
-    <div class="modal-overlay" id="delete-modal">
-        <div class="modal">
+         </div>
+      </div>
+      <!-- Added custom modal HTML -->
+      <div class="modal-overlay" id="delete-modal">
+         <div class="modal">
             <h3>Are you sure you want to delete this habit?</h3>
             <div class="modal-buttons">
-                <button class="modal-btn cancel" onclick="hideDeleteModal()">Cancel</button>
-                <button class="modal-btn confirm" onclick="confirmDelete()">OK</button>
+               <button class="modal-btn cancel" onclick="hideDeleteModal()">Cancel</button>
+               <button class="modal-btn confirm" onclick="confirmDelete()">OK</button>
             </div>
-        </div>
-    </div>
-
-    <script>
-        let habits = [];
-        let habitToDelete = null; // Added variable to track which habit to delete
-
-        // Initialize the app
-        function init() {
-            displayCurrentDate();
-            loadHabits();
-            renderHabits();
-            updateProgress();
-        }
-
-        // Display current date
-        function displayCurrentDate() {
-            const today = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
-        }
-
-        // Load habits from localStorage
-        function loadHabits() {
-            const today = new Date().toDateString();
-            const savedData = localStorage.getItem('habitTracker');
-            
-            if (savedData) {
-                const data = JSON.parse(savedData);
-                
-                // If it's a new day, reset all habits to uncompleted
-                if (data.date !== today) {
-                    habits = data.habits.map(habit => ({
-                        ...habit,
-                        completed: false
-                    }));
-                    saveHabits();
-                } else {
-                    habits = data.habits || [];
-                }
-            }
-        }
-
-        // Save habits to localStorage
-        function saveHabits() {
-            const today = new Date().toDateString();
-            const data = {
-                date: today,
-                habits: habits
-            };
-            localStorage.setItem('habitTracker', JSON.stringify(data));
-        }
-
-        // Add new habit
-        function addHabit() {
-            const input = document.getElementById('habit-input');
-            const habitText = input.value.trim();
-            
-            if (habitText === '') {
-                alert('Please enter a habit!');
-                return;
-            }
-
-            if (habits.some(habit => habit.text.toLowerCase() === habitText.toLowerCase())) {
-                alert('This habit already exists!');
-                return;
-            }
-
-            const newHabit = {
-                id: Date.now(),
-                text: habitText,
-                completed: false
-            };
-
-            habits.push(newHabit);
-            input.value = '';
-            saveHabits();
-            renderHabits();
-            updateProgress();
-        }
-
-        // Toggle habit completion
-        function toggleHabit(id) {
-            habits = habits.map(habit => 
-                habit.id === id ? { ...habit, completed: !habit.completed } : habit
-            );
-            saveHabits();
-            renderHabits();
-            updateProgress();
-        }
-
-        function deleteHabit(id) {
-            habitToDelete = id;
-            showDeleteModal();
-        }
-
-        function showDeleteModal() {
-            document.getElementById('delete-modal').classList.add('show');
-        }
-
-        function hideDeleteModal() {
-            document.getElementById('delete-modal').classList.remove('show');
-            habitToDelete = null;
-        }
-
-        function confirmDelete() {
-            if (habitToDelete !== null) {
-                habits = habits.filter(habit => habit.id !== habitToDelete);
-                saveHabits();
-                renderHabits();
-                updateProgress();
-            }
-            hideDeleteModal();
-        }
-
-        // Render habits list
-        function renderHabits() {
-            const habitsList = document.getElementById('habits-list');
-            
-            if (habits.length === 0) {
-                habitsList.innerHTML = `
-                    <div class="empty-state">
-                        <h3>No habits yet</h3>
-                        <p>Add your first habit above to get started!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            habitsList.innerHTML = habits.map(habit => `
-                <div class="habit-item ${habit.completed ? 'completed' : ''}">
-                    <div class="habit-checkbox ${habit.completed ? 'checked' : ''}" 
-                         onclick="toggleHabit(${habit.id})"></div>
-                    <span class="habit-text">${habit.text}</span>
-                    <button class="delete-btn" onclick="deleteHabit(${habit.id})">×</button>
-                </div>
-            `).join('');
-        }
-
-        // Update progress bar
-        function updateProgress() {
-            const totalHabits = habits.length;
-            const completedHabits = habits.filter(habit => habit.completed).length;
-            const progressPercentage = totalHabits > 0 ? (completedHabits / totalHabits) * 100 : 0;
-
-            document.getElementById('progress-fill').style.width = `${progressPercentage}%`;
-            document.getElementById('progress-text').textContent = 
-                `${completedHabits} of ${totalHabits} habits completed`;
-        }
-
-        // Handle Enter key in input
-        document.getElementById('habit-input').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                addHabit();
-            }
-        });
-
-        // Initialize app when page loads
-        document.addEventListener('DOMContentLoaded', init);
-
-        document.getElementById('delete-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                hideDeleteModal();
-            }
-        });
-    </script>
-</body>
+         </div>
+      </div>
+      <script>
+         let habits = [];
+         let habitToDelete = null; // Added variable to track which habit to delete
+         
+         // Initialize the app
+         function init() {
+             displayCurrentDate();
+             loadHabits();
+             renderHabits();
+             updateProgress();
+         }
+         function resetCompleted() {
+         habits = habits.map(habit => ({ ...habit, completed: false }));
+         saveHabits();
+         renderHabits();
+         updateProgress();
+         }
+         
+         
+         // Display current date
+         function displayCurrentDate() {
+             const today = new Date();
+             const options = { 
+                 weekday: 'long', 
+                 year: 'numeric', 
+                 month: 'long', 
+                 day: 'numeric' 
+             };
+             document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
+         }
+         
+         // Load habits from localStorage
+         function loadHabits() {
+             const today = new Date().toDateString();
+             const savedData = localStorage.getItem('habitTracker');
+             
+             if (savedData) {
+                 const data = JSON.parse(savedData);
+                 
+                 // If it's a new day, reset all habits to uncompleted
+                 if (data.date !== today) {
+                     habits = data.habits.map(habit => ({
+                         ...habit,
+                         completed: false
+                     }));
+                     saveHabits();
+                 } else {
+                     habits = data.habits || [];
+                 }
+             }
+         }
+         
+         // Save habits to localStorage
+         function saveHabits() {
+             const today = new Date().toDateString();
+             const data = {
+                 date: today,
+                 habits: habits
+             };
+             localStorage.setItem('habitTracker', JSON.stringify(data));
+         }
+         
+         // Add new habit
+         function addHabit() {
+             const input = document.getElementById('habit-input');
+             const habitText = input.value.trim();
+             
+             if (habitText === '') {
+                 alert('Please enter a habit!');
+                 return;
+             }
+         
+             if (habits.some(habit => habit.text.toLowerCase() === habitText.toLowerCase())) {
+                 alert('This habit already exists!');
+                 return;
+             }
+         
+             const newHabit = {
+                 id: Date.now(),
+                 text: habitText,
+                 completed: false
+             };
+         
+             habits.push(newHabit);
+             input.value = '';
+             saveHabits();
+             renderHabits();
+             updateProgress();
+         }
+         
+         // Toggle habit completion
+         function toggleHabit(id) {
+             habits = habits.map(habit => 
+                 habit.id === id ? { ...habit, completed: !habit.completed } : habit
+             );
+             saveHabits();
+             renderHabits();
+             updateProgress();
+         }
+         
+         function deleteHabit(id) {
+             habitToDelete = id;
+             showDeleteModal();
+         }
+         
+         function showDeleteModal() {
+             document.getElementById('delete-modal').classList.add('show');
+         }
+         
+         function hideDeleteModal() {
+             document.getElementById('delete-modal').classList.remove('show');
+             habitToDelete = null;
+         }
+         
+         function confirmDelete() {
+             if (habitToDelete !== null) {
+                 habits = habits.filter(habit => habit.id !== habitToDelete);
+                 saveHabits();
+                 renderHabits();
+                 updateProgress();
+             }
+             hideDeleteModal();
+         }
+         
+         // Render habits list
+         function renderHabits() {
+             const habitsList = document.getElementById('habits-list');
+             
+             if (habits.length === 0) {
+                 habitsList.innerHTML = `
+                     <div class="empty-state">
+                         <h3>No habits yet</h3>
+                         <p>Add your first habit above to get started!</p>
+                     </div>
+                 `;
+                 return;
+             }
+         
+             habitsList.innerHTML = habits.map(habit => `
+                 <div class="habit-item ${habit.completed ? 'completed' : ''}">
+                     <div class="habit-checkbox ${habit.completed ? 'checked' : ''}" 
+                          onclick="toggleHabit(${habit.id})"></div>
+                     <span class="habit-text">${habit.text}</span>
+                     <button class="delete-btn" onclick="deleteHabit(${habit.id})">×</button>
+                 </div>
+             `).join('');
+         }
+         
+         // Update progress bar
+         function updateProgress() {
+             const totalHabits = habits.length;
+             const completedHabits = habits.filter(habit => habit.completed).length;
+             const progressPercentage = totalHabits > 0 ? (completedHabits / totalHabits) * 100 : 0;
+         
+             document.getElementById('progress-fill').style.width = `${progressPercentage}%`;
+             document.getElementById('progress-text').textContent = 
+                 `${completedHabits} of ${totalHabits} habits completed`;
+         }
+         
+         // Handle Enter key in input
+         document.getElementById('habit-input').addEventListener('keypress', function(e) {
+             if (e.key === 'Enter') {
+                 addHabit();
+             }
+         });
+         
+         // Initialize app when page loads
+         document.addEventListener('DOMContentLoaded', init);
+         
+         document.getElementById('delete-modal').addEventListener('click', function(e) {
+             if (e.target === this) {
+                 hideDeleteModal();
+             }
+         });
+      </script>
+   </body>
 </html>
