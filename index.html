@@ -207,6 +207,84 @@
             margin-bottom: 8px;
         }
 
+        /* Added custom modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal h3 {
+            color: #ffffff;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 80px;
+        }
+
+        .modal-btn.cancel {
+            background: #333;
+            color: #e5e5e5;
+        }
+
+        .modal-btn.cancel:hover {
+            background: #444;
+        }
+
+        .modal-btn.confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #dc2626;
+        }
+
         @media (max-width: 640px) {
             .container {
                 padding: 10px;
@@ -258,8 +336,20 @@
         </div>
     </div>
 
+    <!-- Added custom modal HTML -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <h3>Are you sure you want to delete this habit?</h3>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="hideDeleteModal()">Cancel</button>
+                <button class="modal-btn confirm" onclick="confirmDelete()">OK</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let habits = [];
+        let habitToDelete = null; // Added variable to track which habit to delete
 
         // Initialize the app
         function init() {
@@ -350,14 +440,28 @@
             updateProgress();
         }
 
-        // Delete habit
         function deleteHabit(id) {
-            if (confirm('Are you sure you want to delete this habit?')) {
-                habits = habits.filter(habit => habit.id !== id);
+            habitToDelete = id;
+            showDeleteModal();
+        }
+
+        function showDeleteModal() {
+            document.getElementById('delete-modal').classList.add('show');
+        }
+
+        function hideDeleteModal() {
+            document.getElementById('delete-modal').classList.remove('show');
+            habitToDelete = null;
+        }
+
+        function confirmDelete() {
+            if (habitToDelete !== null) {
+                habits = habits.filter(habit => habit.id !== habitToDelete);
                 saveHabits();
                 renderHabits();
                 updateProgress();
             }
+            hideDeleteModal();
         }
 
         // Render habits list
@@ -404,6 +508,12 @@
 
         // Initialize app when page loads
         document.addEventListener('DOMContentLoaded', init);
+
+        document.getElementById('delete-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideDeleteModal();
+            }
+        });
     </script>
 </body>
 </html>
