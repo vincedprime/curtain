@@ -27,7 +27,7 @@ class ThemeEngine {
   }
 
   /**
-   * Load a theme configuration
+   * Load a theme plugin from global registry
    */
   async loadTheme(themeName) {
     if (!this.themeRegistry[themeName]) {
@@ -39,10 +39,31 @@ class ThemeEngine {
       return this.loadedThemes.get(themeName);
     }
 
-    // Load theme configuration
-    const themeConfig = this.themeRegistry[themeName];
-    this.loadedThemes.set(themeName, themeConfig);
-    return themeConfig;
+    // Check if theme plugin is available in global registry
+    if (window.ThemePlugins && window.ThemePlugins[themeName]) {
+      const themeConfig = window.ThemePlugins[themeName];
+      this.loadedThemes.set(themeName, themeConfig);
+      return themeConfig;
+    }
+
+    // If not loaded yet, try to load the script dynamically
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = `themes/${themeName}.js`;
+      script.onload = () => {
+        if (window.ThemePlugins && window.ThemePlugins[themeName]) {
+          const themeConfig = window.ThemePlugins[themeName];
+          this.loadedThemes.set(themeName, themeConfig);
+          resolve(themeConfig);
+        } else {
+          reject(new Error(`Theme plugin '${themeName}' failed to register`));
+        }
+      };
+      script.onerror = () => {
+        reject(new Error(`Failed to load theme plugin '${themeName}'`));
+      };
+      document.head.appendChild(script);
+    });
   }
 
   /**
