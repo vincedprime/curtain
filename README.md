@@ -1,2 +1,0 @@
-# curtain
-Another todo app
