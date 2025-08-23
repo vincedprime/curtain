@@ -76,17 +76,117 @@
          position: absolute;
          top: 20px;
          right: 20px;
-         padding: 10px 16px;
+         width: 60px;
+         height: 60px;
          border: none;
-         border-radius: 8px;
+         border-radius: 50%;
          cursor: pointer;
-         font-weight: 600;
          z-index: 2;
-         transition: background 0.3s;
+         transition: all 0.5s ease;
+         overflow: hidden;
+         }
+         .theme-toggle:hover {
+         transform: scale(1.1);
+         }
+         /* Sun Design */
+         .sun {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 30% 30%, #fff9c4, #ffeb3b 40%, #ff9800 70%, #f57c00);
+         position: relative;
+         box-shadow: 0 0 30px rgba(255, 193, 7, 0.8), 0 0 60px rgba(255, 193, 7, 0.4);
+         }
+         .sun::before {
+         content: '';
+         position: absolute;
+         top: 15%;
+         left: 25%;
+         width: 8px;
+         height: 8px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.8);
+         box-shadow: 
+         12px 5px 0 -2px rgba(255, 255, 255, 0.6),
+         8px 15px 0 -3px rgba(255, 255, 255, 0.4);
+         }
+         .sun::after {
+         content: '';
+         position: absolute;
+         top: -10px;
+         left: -10px;
+         right: -10px;
+         bottom: -10px;
+         border-radius: 50%;
+         background: conic-gradient(
+         transparent 0deg,
+         rgba(255, 193, 7, 0.3) 20deg,
+         transparent 40deg,
+         rgba(255, 193, 7, 0.3) 60deg,
+         transparent 80deg,
+         rgba(255, 193, 7, 0.3) 100deg,
+         transparent 120deg,
+         rgba(255, 193, 7, 0.3) 140deg,
+         transparent 160deg,
+         rgba(255, 193, 7, 0.3) 180deg,
+         transparent 200deg,
+         rgba(255, 193, 7, 0.3) 220deg,
+         transparent 240deg,
+         rgba(255, 193, 7, 0.3) 260deg,
+         transparent 280deg,
+         rgba(255, 193, 7, 0.3) 300deg,
+         transparent 320deg,
+         rgba(255, 193, 7, 0.3) 340deg,
+         transparent 360deg
+         );
+         animation: rotate 20s linear infinite;
+         z-index: -1;
+         }
+         /* Moon Design */
+         .moon {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 35% 25%, #f5f5f5, #e8e8e8 40%, #d0d0d0 70%, #b8b8b8);
+         position: relative;
+         box-shadow: 0 0 20px rgba(245, 245, 245, 0.6), inset -8px -8px 0 rgba(180, 180, 180, 0.3);
+         }
+         .moon::before {
+         content: '';
+         position: absolute;
+         top: 20%;
+         left: 30%;
+         width: 6px;
+         height: 6px;
+         border-radius: 50%;
+         background: rgba(160, 160, 160, 0.6);
+         box-shadow: 
+         15px 8px 0 -1px rgba(160, 160, 160, 0.4),
+         8px 20px 0 -2px rgba(160, 160, 160, 0.5),
+         25px 25px 0 -3px rgba(160, 160, 160, 0.3);
+         }
+         .moon::after {
+         content: '';
+         position: absolute;
+         top: 10%;
+         right: 15%;
+         width: 4px;
+         height: 4px;
+         border-radius: 50%;
+         background: rgba(160, 160, 160, 0.4);
+         box-shadow: 
+         -10px 15px 0 1px rgba(160, 160, 160, 0.3),
+         -5px 25px 0 -1px rgba(160, 160, 160, 0.2);
+         }
+         @keyframes rotate {
+         from { transform: rotate(0deg); }
+         to { transform: rotate(360deg); }
          }
          /* Light Theme */
          body.light { background: linear-gradient(to top, #87ceeb, #fdfdfd); color: #222; }
-         body.light .theme-toggle { background: #ffdd57; color: #222; }
+         body.light .theme-toggle { background: transparent; }
+         body.light .sun { display: block; }
+         body.light .moon { display: none; }
          body.light .header h1 { color: #333; }
          body.light .header p { color: #555; }
          body.light .date-display,
@@ -100,7 +200,9 @@
          body.light .clouds { display: block; }
          /* Dark Theme */
          body.dark { background: linear-gradient(to top, #0f0f0f, #1a1a2e); color: #e5e5e5; }
-         body.dark .theme-toggle { background: #1e293b; color: #fff; }
+         body.dark .theme-toggle { background: transparent; }
+         body.dark .sun { display: none; }
+         body.dark .moon { display: block; }
          body.dark .header h1 { color: #fff; }
          body.dark .header p { color: #a3a3a3; }
          body.dark .date-display,
@@ -149,10 +251,13 @@
       <!-- Background Elements -->
       <div class="stars" id="stars"></div>
       <div class="clouds" id="clouds"></div>
-      <button class="theme-toggle" onclick="toggleTheme()">🌙 Dark</button>
+      <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle">
+         <div class="sun"></div>
+         <div class="moon"></div>
+      </button>
       <div class="container">
          <div class="header">
-            <h1>Curtain - Daily Habit Tracker</h1>
+            <h1>Curtain - Complete your daily habits</h1>
             <p>Build better habits, one day at a time</p>
          </div>
          <div class="date-display">
@@ -281,12 +386,13 @@
          // Theme toggle
          function toggleTheme() {
            const body = document.body;
+           
            if (body.classList.contains('dark')) {
-             body.classList.remove('dark'); body.classList.add('light');
-             document.querySelector('.theme-toggle').textContent = '🌞 Light';
+             body.classList.remove('dark'); 
+             body.classList.add('light');
            } else {
-             body.classList.remove('light'); body.classList.add('dark');
-             document.querySelector('.theme-toggle').textContent = '🌙 Dark';
+             body.classList.remove('light'); 
+             body.classList.add('dark');
            }
          }
          
