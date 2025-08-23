@@ -1124,14 +1124,6 @@
             <input type="text" id="habit-input" placeholder="Add a new habit" maxlength="100">
             <button class="add-btn" onclick="addHabit()">Add Habit</button>
          </div>
-         <div class="habit-templates">
-            <span class="templates-label">Quick add:</span>
-            <button class="template-btn" onclick="addTemplate('💧 Drink 8 glasses of water')">💧 Water</button>
-            <button class="template-btn" onclick="addTemplate('🏃‍♂️ Exercise for 30 minutes')">🏃‍♂️ Exercise</button>
-            <button class="template-btn" onclick="addTemplate('🧘‍♀️ Meditate for 10 minutes')">🧘‍♀️ Meditate</button>
-            <button class="template-btn" onclick="addTemplate('📚 Read for 20 minutes')">📚 Read</button>
-            <button class="template-btn" onclick="addTemplate('🌅 Wake up early')">🌅 Early Rise</button>
-         </div>
          <div class="progress-section">
             <div class="progress-bar">
                <div class="progress-fill" id="progress-fill"></div>
@@ -1143,6 +1135,14 @@
                <h3>No habits yet</h3>
                <p>Add your first habit above to get started!</p>
             </div>
+         </div>
+         <div class="habit-templates">
+            <span class="templates-label">Quick add:</span>
+            <button class="template-btn" onclick="addTemplate('💧 Drink 8 glasses of water')">💧 Water</button>
+            <button class="template-btn" onclick="addTemplate('🏃‍♂️ Exercise for 30 minutes')">🏃‍♂️ Exercise</button>
+            <button class="template-btn" onclick="addTemplate('🧘‍♀️ Meditate for 10 minutes')">🧘‍♀️ Meditate</button>
+            <button class="template-btn" onclick="addTemplate('📚 Read for 20 minutes')">📚 Read</button>
+            <button class="template-btn" onclick="addTemplate('🌅 Wake up early')">🌅 Early Rise</button>
          </div>
          <div class="bottom-actions" id="bottom-actions">
             <button class="secondary-reset-btn" onclick="resetCompleted()">Reset</button>
