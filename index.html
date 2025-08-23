@@ -138,9 +138,10 @@
          /* Snowflakes */
          .snowflake {
          position: absolute;
-         color: #e0f2fe;
+         color: #ffffff;
          font-size: 1em;
          animation: snowfall 10s linear infinite;
+         text-shadow: 0 0 3px rgba(14, 165, 233, 0.5);
          }
          .snowflake:nth-child(2n) { font-size: 0.8em; animation-duration: 12s; }
          .snowflake:nth-child(3n) { font-size: 1.2em; animation-duration: 8s; }
@@ -314,6 +315,11 @@
          align-items: center;
          gap: 15px;
          z-index: 2;
+         }
+         
+         /* Hide mobile header on desktop */
+         .mobile-header {
+         display: none;
          }
          
          .date-info {
@@ -497,74 +503,78 @@
            18px 18px 0 -3px rgba(255, 255, 255, 0.4);
          }
          
-         /* Snowflake Icon */
+         /* Snowflake Icon - Snowball Design */
          .snowflake-icon {
          width: 100%;
          height: 100%;
          border-radius: 50%;
-         background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.95), rgba(240, 249, 255, 0.8) 30%, rgba(14, 165, 233, 0.6) 70%, rgba(3, 105, 161, 0.8));
+         background: radial-gradient(circle at 30% 30%, #ffffff, #f0f9ff 40%, #dbeafe 70%, #bfdbfe);
          position: relative;
-         box-shadow: 0 0 15px rgba(14, 165, 233, 0.4), inset -3px -3px 8px rgba(3, 105, 161, 0.2);
-         border: 2px solid rgba(255, 255, 255, 0.4);
+         box-shadow: 0 0 20px rgba(14, 165, 233, 0.3), inset -4px -4px 8px rgba(59, 130, 246, 0.2);
+         border: 2px solid rgba(255, 255, 255, 0.8);
          }
          .snowflake-icon::before {
          content: '';
          position: absolute;
-         top: 20%;
-         left: 25%;
-         width: 8px;
-         height: 8px;
+         top: 25%;
+         left: 30%;
+         width: 6px;
+         height: 6px;
          border-radius: 50%;
-         background: rgba(255, 255, 255, 0.9);
+         background: rgba(59, 130, 246, 0.3);
          box-shadow: 
-           15px 5px 0 -2px rgba(255, 255, 255, 0.8),
-           8px 18px 0 -3px rgba(255, 255, 255, 0.7),
-           22px 20px 0 -4px rgba(255, 255, 255, 0.6);
+           12px 8px 0 -1px rgba(59, 130, 246, 0.2),
+           6px 18px 0 -2px rgba(59, 130, 246, 0.25),
+           18px 20px 0 -3px rgba(59, 130, 246, 0.15);
          }
          .snowflake-icon::after {
          content: '';
          position: absolute;
-         top: 60%;
-         right: 25%;
-         width: 5px;
-         height: 5px;
+         top: 15%;
+         left: 20%;
+         width: 10px;
+         height: 8px;
          border-radius: 50%;
-         background: rgba(255, 255, 255, 0.7);
+         background: rgba(255, 255, 255, 0.9);
          box-shadow: 
-           -8px -10px 0 -1px rgba(255, 255, 255, 0.5);
+           15px 12px 0 -2px rgba(255, 255, 255, 0.7);
          }
          
-         /* Raindrop Icon */
+         /* Raindrop Icon - Circular Water Droplet */
          .raindrop-icon {
          width: 100%;
          height: 100%;
          border-radius: 50%;
-         background: radial-gradient(circle at 30% 30%, #6b7280, #3b82f6 40%, #1d4ed8 70%, #1e3a8a);
+         background: radial-gradient(circle at 25% 25%, rgba(147, 197, 253, 0.9), rgba(59, 130, 246, 0.8) 30%, rgba(29, 78, 216, 0.9) 70%, rgba(30, 58, 138, 0.95));
          position: relative;
-         box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+         box-shadow: 0 0 15px rgba(59, 130, 246, 0.5), inset -3px -3px 6px rgba(29, 78, 216, 0.3);
+         border: 2px solid rgba(147, 197, 253, 0.4);
          overflow: hidden;
          }
          .raindrop-icon::before {
          content: '';
          position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
-         width: 16px;
-         height: 24px;
-         background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.9), rgba(59, 130, 246, 0.8) 40%, rgba(29, 78, 216, 0.9) 80%);
-         border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-         box-shadow: inset -2px -2px 4px rgba(29, 78, 216, 0.3);
+         top: 20%;
+         left: 25%;
+         width: 12px;
+         height: 10px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.8);
+         box-shadow: 
+           15px 8px 0 -3px rgba(255, 255, 255, 0.6),
+           8px 20px 0 -4px rgba(255, 255, 255, 0.4);
          }
          .raindrop-icon::after {
          content: '';
          position: absolute;
-         top: 35%;
-         left: 40%;
+         top: 60%;
+         right: 20%;
          width: 6px;
-         height: 4px;
+         height: 6px;
          border-radius: 50%;
-         background: rgba(255, 255, 255, 0.8);
+         background: rgba(255, 255, 255, 0.5);
+         box-shadow: 
+           -8px -8px 0 -1px rgba(255, 255, 255, 0.3);
          }
          
          @keyframes rotate {
@@ -712,7 +722,7 @@
          body.cherry-blossom .petals { display: block; }
 
          /* Snow Theme */
-         body.snow { background: linear-gradient(to top, #f0f9ff, #e0f2fe); color: #1e3a8a; }
+         body.snow { background: linear-gradient(to top, #c8e5fa, #91cff9); color: #1e3a8a; }
          body.snow .theme-toggle { background: transparent; }
          body.snow .sun, body.snow .moon, body.snow .bubble-icon, body.snow .leaf-icon, body.snow .petal-icon, body.snow .raindrop-icon { display: none; }
          body.snow .snowflake-icon { display: block; }
@@ -1289,6 +1299,309 @@
          0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
          100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
          }
+         
+         /* Mobile Responsive Styles */
+         @media (max-width: 768px) {
+           body {
+             padding: 10px;
+           }
+           
+           /* Mobile Header Layout */
+           .mobile-header {
+             display: flex !important;
+             justify-content: space-between;
+             align-items: center;
+             padding: 10px 15px;
+             margin-bottom: 20px;
+             border-radius: 12px;
+             backdrop-filter: blur(10px);
+             position: relative;
+             z-index: 10;
+           }
+           
+           .mobile-header-left {
+             flex: 1;
+           }
+           
+           .mobile-header-center {
+             flex: 1;
+             display: flex;
+             justify-content: center;
+           }
+           
+           .mobile-header-right {
+             flex: 1;
+             display: flex;
+             justify-content: flex-end;
+           }
+           
+           /* Hide desktop header elements on mobile */
+           .top-left-info, .top-right-info {
+             display: none;
+           }
+           
+           .container {
+             padding: 10px;
+             max-width: 100%;
+           }
+           
+           /* Header text */
+           .header h1 {
+             font-size: 2rem;
+           }
+           
+           .header h2 {
+             font-size: 1.2rem;
+           }
+           
+           .header p {
+             font-size: 1rem;
+           }
+           
+           .daily-quote {
+             font-size: 0.85rem;
+             max-width: 100%;
+           }
+           
+           /* Mobile header components */
+           .mobile-header .date-info {
+             font-size: 0.8rem;
+             padding: 6px 10px;
+             border-radius: 8px;
+             white-space: nowrap;
+           }
+           
+           .mobile-header .streak-counter {
+             font-size: 0.75rem;
+             padding: 4px 8px;
+             border-radius: 12px;
+             white-space: nowrap;
+           }
+           
+           .mobile-header .theme-dropdown {
+             position: relative;
+           }
+           
+           .mobile-header .theme-dropdown-toggle {
+             width: 40px;
+             height: 40px;
+           }
+           
+           .mobile-header .theme-dropdown-menu {
+             min-width: 180px;
+             right: 0;
+             transform: none;
+           }
+           
+           .theme-dropdown-option {
+             padding: 8px;
+           }
+           
+           .theme-dropdown-option .theme-preview {
+             width: 20px;
+             height: 20px;
+           }
+           
+           .theme-dropdown-option .theme-name {
+             font-size: 0.8rem;
+           }
+           
+           /* Add habit section */
+           .add-habit {
+             flex-direction: column;
+             gap: 12px;
+             padding: 16px;
+           }
+           
+           .add-habit input {
+             width: 100%;
+             padding: 12px 16px;
+             font-size: 0.9rem;
+           }
+           
+           .add-btn {
+             width: 100%;
+             padding: 12px;
+             justify-content: center;
+           }
+           
+           /* Progress section */
+           .progress-section {
+             margin-bottom: 20px;
+           }
+           
+           .progress-text {
+             font-size: 0.85rem;
+           }
+           
+           /* Habit templates */
+           .habit-templates {
+             flex-direction: column;
+             align-items: stretch;
+             padding: 12px;
+             gap: 8px;
+           }
+           
+           .templates-label {
+             text-align: center;
+             margin-bottom: 8px;
+           }
+           
+           .template-btn {
+             padding: 8px 12px;
+             font-size: 0.75rem;
+             text-align: center;
+             margin: 2px 0;
+           }
+           
+           /* Habit items */
+           .habit-item {
+             padding: 12px;
+             margin-bottom: 8px;
+           }
+           
+           .habit-text {
+             font-size: 0.9rem;
+           }
+           
+           .habit-checkbox {
+             width: 18px;
+             height: 18px;
+           }
+           
+           .delete-btn {
+             width: 20px;
+             height: 20px;
+           }
+           
+           /* Bottom actions */
+           .bottom-actions {
+             flex-direction: column;
+             gap: 8px;
+             padding: 0 10px;
+           }
+           
+           .secondary-reset-btn, .secondary-delete-btn {
+             width: 100%;
+             padding: 10px;
+             font-size: 0.85rem;
+           }
+           
+           /* Footer */
+           .footer-info {
+             font-size: 0.8rem;
+             padding: 16px;
+             margin-top: 20px;
+           }
+           
+           /* Modals */
+           .modal {
+             width: 95%;
+             max-width: 350px;
+             padding: 20px;
+           }
+           
+           .modal h3 {
+             font-size: 1.1rem;
+           }
+           
+           .modal-btn {
+             padding: 8px 16px;
+             font-size: 0.9rem;
+           }
+           
+           /* Completion overlay */
+           .completion-content {
+             padding: 30px 20px;
+             width: 90%;
+             max-width: 350px;
+           }
+           
+           .completion-icon {
+             font-size: 3rem;
+           }
+           
+           .completion-content h2 {
+             font-size: 1.5rem;
+           }
+           
+           .completion-content p {
+             font-size: 1rem;
+           }
+           
+           /* Empty state */
+           .empty-state {
+             padding: 40px 15px;
+           }
+           
+           .empty-state h3 {
+             font-size: 1.3rem;
+           }
+           
+           .empty-state p {
+             font-size: 1rem;
+           }
+           
+           .empty-state .emoji {
+             font-size: 2.5rem;
+           }
+         }
+         
+         /* Extra small screens */
+         @media (max-width: 480px) {
+           .header h1 {
+             font-size: 1.8rem;
+           }
+           
+           .header h2 {
+             font-size: 1.1rem;
+           }
+           
+           .daily-quote {
+             font-size: 0.8rem;
+           }
+           
+           .theme-dropdown-toggle {
+             width: 40px;
+             height: 40px;
+           }
+           
+           .habit-templates {
+             display: grid;
+             grid-template-columns: 1fr 1fr;
+             gap: 6px;
+           }
+           
+           .templates-label {
+             grid-column: 1 / -1;
+           }
+           
+           .template-btn {
+             font-size: 0.7rem;
+             padding: 6px 8px;
+           }
+           
+           .completion-content {
+             padding: 25px 15px;
+           }
+           
+           .completion-icon {
+             font-size: 2.5rem;
+           }
+           
+           .completion-content h2 {
+             font-size: 1.3rem;
+           }
+           
+           /* Mobile header theme-specific styling */
+           body.starry-night .mobile-header { background: rgba(26, 26, 26, 0.8); border: 1px solid rgba(51, 51, 51, 0.3); }
+           body.cloudy-day .mobile-header { background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(204, 204, 204, 0.3); }
+           body.ocean .mobile-header { background: rgba(20, 83, 109, 0.8); border: 1px solid rgba(8, 145, 178, 0.3); }
+           body.forest .mobile-header { background: rgba(20, 83, 45, 0.8); border: 1px solid rgba(22, 163, 74, 0.3); }
+           body.cherry-blossom .mobile-header { background: rgba(252, 231, 243, 0.8); border: 1px solid rgba(219, 39, 119, 0.3); }
+           body.snow .mobile-header { background: rgba(240, 249, 255, 0.9); border: 1px solid rgba(14, 165, 233, 0.3); }
+           body.rain .mobile-header { background: rgba(55, 65, 81, 0.8); border: 1px solid rgba(59, 130, 246, 0.3); }
+         }
       </style>
    </head>
    <body class="starry-night">
@@ -1311,19 +1624,74 @@
          <div class="confetti" id="confetti"></div>
       </div>
       
-      <!-- Top Left Info -->
+      <!-- Mobile Header (shown only on mobile) -->
+      <div class="mobile-header">
+         <div class="mobile-header-left">
+            <div class="date-info" id="current-date-mobile"></div>
+         </div>
+         <div class="mobile-header-center">
+            <div class="streak-counter" id="streak-counter-mobile">🌱 Start your streak!</div>
+         </div>
+         <div class="mobile-header-right">
+            <div class="theme-dropdown" id="theme-dropdown-mobile">
+               <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle-mobile">
+                  <div class="current-theme-icon">
+                     <div class="sun"></div>
+                     <div class="moon"></div>
+                     <div class="bubble-icon"></div>
+                     <div class="leaf-icon"></div>
+                     <div class="petal-icon"></div>
+                     <div class="snowflake-icon"></div>
+                     <div class="raindrop-icon"></div>
+                  </div>
+                  <span class="dropdown-arrow">▼</span>
+               </button>
+               <div class="theme-dropdown-menu" id="theme-dropdown-menu-mobile">
+                  <div class="theme-dropdown-option" data-theme="starry-night">
+                     <div class="theme-preview starry-night-preview"></div>
+                     <span class="theme-name">Starry Night</span>
+                  </div>
+                  <div class="theme-dropdown-option" data-theme="cloudy-day">
+                     <div class="theme-preview cloudy-day-preview"></div>
+                     <span class="theme-name">Cloudy Day</span>
+                  </div>
+                  <div class="theme-dropdown-option" data-theme="ocean">
+                     <div class="theme-preview ocean-preview"></div>
+                     <span class="theme-name">Ocean</span>
+                  </div>
+                  <div class="theme-dropdown-option" data-theme="forest">
+                     <div class="theme-preview forest-preview"></div>
+                     <span class="theme-name">Forest</span>
+                  </div>
+                  <div class="theme-dropdown-option" data-theme="cherry-blossom">
+                     <div class="theme-preview cherry-blossom-preview"></div>
+                     <span class="theme-name">Cherry</span>
+                  </div>
+                  <div class="theme-dropdown-option" data-theme="snow">
+                     <div class="theme-preview snow-preview"></div>
+                     <span class="theme-name">Snow</span>
+                  </div>
+                  <div class="theme-dropdown-option" data-theme="rain">
+                     <div class="theme-preview rain-preview"></div>
+                     <span class="theme-name">Rain</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Desktop Header (hidden on mobile) -->
       <div class="top-left-info">
          <div class="date-info" id="current-date"></div>
       </div>
       
-            <!-- Top Right Info -->
       <div class="top-right-info">
          <div class="streak-counter" id="streak-counter">🌱 Start your streak!</div>
          <div class="theme-dropdown" id="theme-dropdown">
             <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle">
                               <div class="current-theme-icon">
-                  <div class="sun"></div>
-                  <div class="moon"></div>
+         <div class="sun"></div>
+         <div class="moon"></div>
                   <div class="bubble-icon"></div>
                   <div class="leaf-icon"></div>
                   <div class="petal-icon"></div>
@@ -1489,7 +1857,19 @@
          function displayCurrentDate() {
            const today = new Date();
            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-           document.getElementById('current-date').textContent = today.toLocaleDateString('en-US', options);
+           const mobileOptions = { weekday: 'short', month: 'short', day: 'numeric' };
+           
+           // Desktop date
+           const desktopDate = document.getElementById('current-date');
+           if (desktopDate) {
+             desktopDate.textContent = today.toLocaleDateString('en-US', options);
+           }
+           
+           // Mobile date (shorter format)
+           const mobileDate = document.getElementById('current-date-mobile');
+           if (mobileDate) {
+             mobileDate.textContent = today.toLocaleDateString('en-US', mobileOptions);
+           }
          }
          
          function loadHabits() {
@@ -1523,11 +1903,18 @@
          }
          
          function updateStreakDisplay() {
-           const streakElement = document.getElementById('streak-counter');
-           if (streakData.count === 0) {
-             streakElement.textContent = '🌱 Start your streak!';
-           } else {
-             streakElement.textContent = `🔥 ${streakData.count}`;
+           const streakText = streakData.count === 0 ? '🌱 Start your streak!' : `🔥 ${streakData.count}-day streak`;
+           
+           // Desktop streak counter
+           const desktopStreak = document.getElementById('streak-counter');
+           if (desktopStreak) {
+             desktopStreak.textContent = streakText;
+           }
+           
+           // Mobile streak counter
+           const mobileStreak = document.getElementById('streak-counter-mobile');
+           if (mobileStreak) {
+             mobileStreak.textContent = streakText;
            }
          }
          
@@ -1829,8 +2216,20 @@
          }
          
          function toggleThemeDropdown() {
-           const dropdown = document.getElementById('theme-dropdown');
-           dropdown.classList.toggle('open');
+           // Check if we're on mobile or desktop based on screen width
+           const isMobile = window.innerWidth <= 768;
+           
+           if (isMobile) {
+             const mobileDropdown = document.getElementById('theme-dropdown-mobile');
+             if (mobileDropdown) {
+               mobileDropdown.classList.toggle('open');
+             }
+           } else {
+             const desktopDropdown = document.getElementById('theme-dropdown');
+             if (desktopDropdown) {
+               desktopDropdown.classList.toggle('open');
+             }
+           }
          }
          
          function updateThemeSelector() {
@@ -2005,15 +2404,24 @@
              option.addEventListener('click', () => {
                const theme = option.dataset.theme;
                selectTheme(theme);
-               toggleThemeDropdown(); // Close dropdown after selection
+               // Close both desktop and mobile dropdowns
+               const desktopDropdown = document.getElementById('theme-dropdown');
+               const mobileDropdown = document.getElementById('theme-dropdown-mobile');
+               if (desktopDropdown) desktopDropdown.classList.remove('open');
+               if (mobileDropdown) mobileDropdown.classList.remove('open');
              });
            });
            
            // Close dropdown when clicking outside
            document.addEventListener('click', (e) => {
-             const dropdown = document.getElementById('theme-dropdown');
-             if (!dropdown.contains(e.target)) {
-               dropdown.classList.remove('open');
+             const desktopDropdown = document.getElementById('theme-dropdown');
+             const mobileDropdown = document.getElementById('theme-dropdown-mobile');
+             
+             if (desktopDropdown && !desktopDropdown.contains(e.target)) {
+               desktopDropdown.classList.remove('open');
+             }
+             if (mobileDropdown && !mobileDropdown.contains(e.target)) {
+               mobileDropdown.classList.remove('open');
              }
            });
          });
