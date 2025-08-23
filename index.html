@@ -15,7 +15,7 @@
          overflow-x: hidden;
          }
          /* Background Layers */
-         .stars, .clouds, .waves, .leaves, .petals {
+         .stars, .clouds, .waves, .leaves, .petals, .snowflakes, .raindrops {
          position: fixed;
          top: 0; left: 0;
          width: 100%; height: 100%;
@@ -133,6 +133,39 @@
          0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
          50% { transform: translateY(50vh) rotate(180deg) scale(0.8); }
          100% { transform: translateY(100vh) rotate(360deg) scale(0.6); opacity: 0; }
+         }
+         
+         /* Snowflakes */
+         .snowflake {
+         position: absolute;
+         color: #e0f2fe;
+         font-size: 1em;
+         animation: snowfall 10s linear infinite;
+         }
+         .snowflake:nth-child(2n) { font-size: 0.8em; animation-duration: 12s; }
+         .snowflake:nth-child(3n) { font-size: 1.2em; animation-duration: 8s; }
+         .snowflake:nth-child(4n) { font-size: 0.6em; animation-duration: 14s; }
+         @keyframes snowfall {
+         0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 1; }
+         100% { transform: translateY(100vh) translateX(100px) rotate(360deg); opacity: 0; }
+         }
+         
+         /* Raindrops */
+         .raindrop {
+         position: absolute;
+         width: 2px;
+         height: 15px;
+         background: linear-gradient(to bottom, transparent, #3b82f6, transparent);
+         border-radius: 0 0 50% 50%;
+         animation: rainfall 1s linear infinite;
+         }
+         .raindrop:nth-child(2n) { height: 12px; animation-duration: 0.8s; }
+         .raindrop:nth-child(3n) { height: 18px; animation-duration: 1.2s; }
+         @keyframes rainfall {
+         0% { transform: translateY(-20px) translateX(0); opacity: 0; }
+         10% { opacity: 1; }
+         90% { opacity: 1; }
+         100% { transform: translateY(100vh) translateX(-50px); opacity: 0; }
          }
          /* Content container */
          .container {
@@ -464,6 +497,76 @@
            18px 18px 0 -3px rgba(255, 255, 255, 0.4);
          }
          
+         /* Snowflake Icon */
+         .snowflake-icon {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.95), rgba(240, 249, 255, 0.8) 30%, rgba(14, 165, 233, 0.6) 70%, rgba(3, 105, 161, 0.8));
+         position: relative;
+         box-shadow: 0 0 15px rgba(14, 165, 233, 0.4), inset -3px -3px 8px rgba(3, 105, 161, 0.2);
+         border: 2px solid rgba(255, 255, 255, 0.4);
+         }
+         .snowflake-icon::before {
+         content: '';
+         position: absolute;
+         top: 20%;
+         left: 25%;
+         width: 8px;
+         height: 8px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.9);
+         box-shadow: 
+           15px 5px 0 -2px rgba(255, 255, 255, 0.8),
+           8px 18px 0 -3px rgba(255, 255, 255, 0.7),
+           22px 20px 0 -4px rgba(255, 255, 255, 0.6);
+         }
+         .snowflake-icon::after {
+         content: '';
+         position: absolute;
+         top: 60%;
+         right: 25%;
+         width: 5px;
+         height: 5px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.7);
+         box-shadow: 
+           -8px -10px 0 -1px rgba(255, 255, 255, 0.5);
+         }
+         
+         /* Raindrop Icon */
+         .raindrop-icon {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 30% 30%, #6b7280, #3b82f6 40%, #1d4ed8 70%, #1e3a8a);
+         position: relative;
+         box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
+         overflow: hidden;
+         }
+         .raindrop-icon::before {
+         content: '';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         width: 16px;
+         height: 24px;
+         background: radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.9), rgba(59, 130, 246, 0.8) 40%, rgba(29, 78, 216, 0.9) 80%);
+         border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+         box-shadow: inset -2px -2px 4px rgba(29, 78, 216, 0.3);
+         }
+         .raindrop-icon::after {
+         content: '';
+         position: absolute;
+         top: 35%;
+         left: 40%;
+         width: 6px;
+         height: 4px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.8);
+         }
+         
          @keyframes rotate {
          from { transform: rotate(0deg); }
          to { transform: rotate(360deg); }
@@ -605,8 +708,64 @@
          body.cherry-blossom .secondary-delete-btn:hover { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
          body.cherry-blossom .add-btn { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); }
          body.cherry-blossom .add-btn:hover { box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
-         body.cherry-blossom .stars, body.cherry-blossom .clouds, body.cherry-blossom .waves, body.cherry-blossom .leaves { display: none; }
+         body.cherry-blossom .stars, body.cherry-blossom .clouds, body.cherry-blossom .waves, body.cherry-blossom .leaves, body.cherry-blossom .snowflakes, body.cherry-blossom .raindrops { display: none; }
          body.cherry-blossom .petals { display: block; }
+
+         /* Snow Theme */
+         body.snow { background: linear-gradient(to top, #f0f9ff, #e0f2fe); color: #1e3a8a; }
+         body.snow .theme-toggle { background: transparent; }
+         body.snow .sun, body.snow .moon, body.snow .bubble-icon, body.snow .leaf-icon, body.snow .petal-icon, body.snow .raindrop-icon { display: none; }
+         body.snow .snowflake-icon { display: block; }
+         body.snow .header h1 { color: #1e3a8a; }
+         body.snow .header p { color: #475569; }
+         body.snow .date-display, body.snow .add-habit input, body.snow .habit-item, body.snow .modal { background: rgba(240, 249, 255, 0.9); border: 1px solid #0ea5e9; color: #1e3a8a; }
+         body.snow .progress-bar { background: #e0f2fe; }
+         body.snow .progress-fill { background: linear-gradient(90deg, #0ea5e9, #0284c7); }
+         body.snow .habit-item.completed { background: rgba(219, 234, 254, 0.8); border-color: #0ea5e9; }
+         body.snow .footer-info { background: rgba(240, 249, 255, 0.6); color: #1e3a8a; border: 1px solid rgba(14, 165, 233, 0.3); }
+         body.snow .date-info { background: rgba(240, 249, 255, 0.9); color: #1e3a8a; border: 1px solid rgba(14, 165, 233, 0.3); }
+         body.snow .add-habit { background: rgba(240, 249, 255, 0.4); border: 1px solid rgba(14, 165, 233, 0.2); }
+         body.snow .add-habit input:focus { border-color: #0ea5e9; }
+         body.snow .streak-counter { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; box-shadow: 0 2px 8px rgba(14, 165, 233, 0.4); }
+         body.snow .habit-templates { background: rgba(240, 249, 255, 0.3); border: 1px solid rgba(14, 165, 233, 0.2); }
+         body.snow .template-btn { color: #1e3a8a; border-color: #0ea5e9; }
+         body.snow .template-btn:hover { background: rgba(14, 165, 233, 0.1); border-color: #0284c7; }
+         body.snow .secondary-reset-btn { color: #0ea5e9; border-color: #0ea5e9; }
+         body.snow .secondary-reset-btn:hover { background: rgba(14, 165, 233, 0.1); border-color: #0284c7; color: #1e3a8a; }
+         body.snow .secondary-delete-btn { color: #dc2626; border-color: #fca5a5; }
+         body.snow .secondary-delete-btn:hover { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
+         body.snow .add-btn { background: linear-gradient(135deg, #0ea5e9, #0284c7); box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4); }
+         body.snow .add-btn:hover { box-shadow: 0 6px 20px rgba(14, 165, 233, 0.6); }
+         body.snow .stars, body.snow .clouds, body.snow .waves, body.snow .leaves, body.snow .petals, body.snow .raindrops { display: none; }
+         body.snow .snowflakes { display: block; }
+
+         /* Rain Theme */
+         body.rain { background: linear-gradient(to top, #374151, #1f2937); color: #e5e7eb; }
+         body.rain .theme-toggle { background: transparent; }
+         body.rain .sun, body.rain .moon, body.rain .bubble-icon, body.rain .leaf-icon, body.rain .petal-icon, body.rain .snowflake-icon { display: none; }
+         body.rain .raindrop-icon { display: block; }
+         body.rain .header h1 { color: #e5e7eb; }
+         body.rain .header p { color: #f3f4f6; }
+         body.rain .date-display, body.rain .add-habit input, body.rain .habit-item, body.rain .modal { background: rgba(55, 65, 81, 0.8); border: 1px solid #3b82f6; color: #e5e7eb; }
+         body.rain .progress-bar { background: #4b5563; }
+         body.rain .progress-fill { background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
+         body.rain .habit-item.completed { background: rgba(30, 58, 138, 0.3); border-color: #3b82f6; }
+         body.rain .footer-info { background: rgba(55, 65, 81, 0.6); color: #e5e7eb; border: 1px solid rgba(59, 130, 246, 0.3); }
+         body.rain .date-info { background: rgba(55, 65, 81, 0.8); color: #e5e7eb; border: 1px solid rgba(59, 130, 246, 0.3); }
+         body.rain .add-habit { background: rgba(55, 65, 81, 0.4); border: 1px solid rgba(59, 130, 246, 0.2); }
+         body.rain .add-habit input:focus { border-color: #3b82f6; }
+         body.rain .streak-counter { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); }
+         body.rain .habit-templates { background: rgba(55, 65, 81, 0.3); border: 1px solid rgba(59, 130, 246, 0.2); }
+         body.rain .template-btn { color: #e5e7eb; border-color: #6b7280; }
+         body.rain .template-btn:hover { background: rgba(75, 85, 99, 0.3); border-color: #9ca3af; }
+         body.rain .secondary-reset-btn { color: #6b7280; border-color: #6b7280; }
+         body.rain .secondary-reset-btn:hover { background: rgba(75, 85, 99, 0.3); border-color: #9ca3af; color: #e5e7eb; }
+         body.rain .secondary-delete-btn { color: #f87171; border-color: #7f1d1d; }
+         body.rain .secondary-delete-btn:hover { background: rgba(239, 68, 68, 0.1); border-color: #dc2626; color: #fca5a5; }
+         body.rain .add-btn { background: linear-gradient(135deg, #3b82f6, #1d4ed8); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+         body.rain .add-btn:hover { box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6); }
+         body.rain .stars, body.rain .clouds, body.rain .waves, body.rain .leaves, body.rain .petals, body.rain .snowflakes { display: none; }
+         body.rain .raindrops { display: block; }
          
          /* Theme Preview Styles */
          .theme-preview {
@@ -663,6 +822,28 @@
          }
          .cherry-blossom-preview::after {
          content: '🌸';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
+         }
+         .snow-preview {
+         background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+         }
+         .snow-preview::after {
+         content: '❄️';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
+         }
+         .rain-preview {
+         background: linear-gradient(135deg, #374151, #1f2937);
+         }
+         .rain-preview::after {
+         content: '🌧️';
          position: absolute;
          top: 50%;
          left: 50%;
@@ -747,6 +928,24 @@
          }
          body.cherry-blossom .completion-content h2 { color: #ec4899; }
          body.cherry-blossom .completion-content p { color: #db2777; }
+         
+         body.snow .completion-content { 
+         background: rgba(240, 249, 255, 0.95); 
+         border: 1px solid rgba(14, 165, 233, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 30px rgba(14, 165, 233, 0.3);
+         color: #1e3a8a;
+         }
+         body.snow .completion-content h2 { color: #0ea5e9; }
+         body.snow .completion-content p { color: #475569; }
+         
+         body.rain .completion-content { 
+         background: rgba(55, 65, 81, 0.95); 
+         border: 1px solid rgba(59, 130, 246, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.4);
+         color: #e5e7eb;
+         }
+         body.rain .completion-content h2 { color: #3b82f6; }
+         body.rain .completion-content p { color: #f3f4f6; }
          /* Components reused */
          .date-display { border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 30px; }
          .date-display h2 { font-size: 1.2rem; font-weight: 600; }
@@ -1099,6 +1298,8 @@
       <div class="waves" id="waves"></div>
       <div class="leaves" id="leaves"></div>
       <div class="petals" id="petals"></div>
+      <div class="snowflakes" id="snowflakes"></div>
+      <div class="raindrops" id="raindrops"></div>
       
       <!-- Completion Animation -->
       <div class="completion-overlay" id="completion-overlay">
@@ -1120,12 +1321,14 @@
          <div class="streak-counter" id="streak-counter">🌱 Start your streak!</div>
          <div class="theme-dropdown" id="theme-dropdown">
             <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle">
-               <div class="current-theme-icon">
-         <div class="sun"></div>
-         <div class="moon"></div>
+                              <div class="current-theme-icon">
+                  <div class="sun"></div>
+                  <div class="moon"></div>
                   <div class="bubble-icon"></div>
                   <div class="leaf-icon"></div>
                   <div class="petal-icon"></div>
+                  <div class="snowflake-icon"></div>
+                  <div class="raindrop-icon"></div>
                </div>
                <span class="dropdown-arrow">▼</span>
       </button>
@@ -1149,6 +1352,14 @@
                <div class="theme-dropdown-option" data-theme="cherry-blossom">
                   <div class="theme-preview cherry-blossom-preview"></div>
                   <span class="theme-name">Cherry</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="snow">
+                  <div class="theme-preview snow-preview"></div>
+                  <span class="theme-name">Snow</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="rain">
+                  <div class="theme-preview rain-preview"></div>
+                  <span class="theme-name">Rain</span>
                </div>
             </div>
          </div>
@@ -1235,7 +1446,7 @@
          let confirmCallback = null;
          let streakData = { count: 0, lastCompletedDate: null };
          let currentTheme = 'starry-night';
-         const themes = ['starry-night', 'cloudy-day', 'ocean', 'forest', 'cherry-blossom'];
+         const themes = ['starry-night', 'cloudy-day', 'ocean', 'forest', 'cherry-blossom', 'snow', 'rain'];
          
          const dailyQuotes = [
            { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier" },
@@ -1395,6 +1606,16 @@
                title.textContent = 'Blooming Beautiful!';
                message.textContent = 'Your habits have blossomed perfectly today!';
                break;
+             case 'snow':
+               icon.textContent = '❄️';
+               title.textContent = 'Crystal Clear Success!';
+               message.textContent = 'Your habits are as perfect as fresh snow!';
+               break;
+             case 'rain':
+               icon.textContent = '⚡';
+               title.textContent = 'Electrifying Achievement!';
+               message.textContent = 'You\'ve powered through all your habits like lightning!';
+               break;
            }
            
            // Generate theme-specific confetti
@@ -1441,6 +1662,19 @@
                  piece.className = 'confetti-piece';
                  piece.style.background = ['#ec4899', '#db2777', '#be185d', '#fdf2f8'][Math.floor(Math.random() * 4)];
                  piece.style.borderRadius = '50% 0 50% 0';
+                 break;
+               case 'snow':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#0ea5e9', '#0284c7', '#0369a1', '#f0f9ff'][Math.floor(Math.random() * 4)];
+                 piece.style.borderRadius = '50%';
+                 piece.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                 break;
+               case 'rain':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#3b82f6', '#1d4ed8', '#1e3a8a', '#6b7280'][Math.floor(Math.random() * 4)];
+                 piece.style.borderRadius = '0 0 50% 50%';
+                 piece.style.width = '3px';
+                 piece.style.height = '12px';
                  break;
              }
              
@@ -1632,6 +1866,12 @@
              case 'cherry-blossom':
                generatePetals();
                break;
+             case 'snow':
+               generateSnowflakes();
+               break;
+             case 'rain':
+               generateRaindrops();
+               break;
            }
          }
          
@@ -1641,6 +1881,8 @@
            document.getElementById('waves').innerHTML = '';
            document.getElementById('leaves').innerHTML = '';
            document.getElementById('petals').innerHTML = '';
+           document.getElementById('snowflakes').innerHTML = '';
+           document.getElementById('raindrops').innerHTML = '';
          }
          
          function generateStars() {
@@ -1718,6 +1960,34 @@
              petal.style.animationDelay = Math.random() * 10 + 's';
              petal.style.animationDuration = (8 + Math.random() * 4) + 's';
              petalsContainer.appendChild(petal);
+           }
+         }
+         
+         function generateSnowflakes() {
+           const snowflakesContainer = document.getElementById('snowflakes');
+           const snowflakeSymbols = ['❄', '❅', '❆', '✻', '✼', '❉'];
+           for (let i = 0; i < 30; i++) {
+             const snowflake = document.createElement('div');
+             snowflake.className = 'snowflake';
+             snowflake.textContent = snowflakeSymbols[Math.floor(Math.random() * snowflakeSymbols.length)];
+             snowflake.style.left = Math.random() * 100 + '%';
+             snowflake.style.top = '-50px';
+             snowflake.style.animationDelay = Math.random() * 10 + 's';
+             snowflake.style.animationDuration = (8 + Math.random() * 6) + 's';
+             snowflakesContainer.appendChild(snowflake);
+           }
+         }
+         
+         function generateRaindrops() {
+           const raindropsContainer = document.getElementById('raindrops');
+           for (let i = 0; i < 50; i++) {
+             const raindrop = document.createElement('div');
+             raindrop.className = 'raindrop';
+             raindrop.style.left = Math.random() * 100 + '%';
+             raindrop.style.top = '-20px';
+             raindrop.style.animationDelay = Math.random() * 2 + 's';
+             raindrop.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+             raindropsContainer.appendChild(raindrop);
            }
          }
          
