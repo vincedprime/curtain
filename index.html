@@ -701,6 +701,52 @@
          body.cherry-blossom .theme-dropdown-option { color: #db2777; }
          body.cherry-blossom .theme-dropdown-option:hover { background: rgba(219, 39, 119, 0.2); }
          body.cherry-blossom .dropdown-arrow { color: #db2777; }
+         
+         /* Theme-specific completion popup styling */
+         body.starry-night .completion-content { 
+         background: rgba(26, 26, 26, 0.95); 
+         border: 1px solid rgba(56, 189, 248, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.2);
+         color: #e5e5e5;
+         }
+         body.starry-night .completion-content h2 { color: #38bdf8; }
+         body.starry-night .completion-content p { color: #a3a3a3; }
+         
+         body.cloudy-day .completion-content { 
+         background: rgba(255, 255, 255, 0.95); 
+         border: 1px solid rgba(251, 191, 36, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 30px rgba(251, 191, 36, 0.2);
+         color: #222;
+         }
+         body.cloudy-day .completion-content h2 { color: #f59e0b; }
+         body.cloudy-day .completion-content p { color: #555; }
+         
+         body.ocean .completion-content { 
+         background: rgba(20, 83, 109, 0.95); 
+         border: 1px solid rgba(6, 182, 212, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(6, 182, 212, 0.3);
+         color: #ecfeff;
+         }
+         body.ocean .completion-content h2 { color: #06b6d4; }
+         body.ocean .completion-content p { color: #a5f3fc; }
+         
+         body.forest .completion-content { 
+         background: rgba(20, 83, 45, 0.95); 
+         border: 1px solid rgba(34, 197, 94, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(34, 197, 94, 0.3);
+         color: #dcfce7;
+         }
+         body.forest .completion-content h2 { color: #22c55e; }
+         body.forest .completion-content p { color: #bbf7d0; }
+         
+         body.cherry-blossom .completion-content { 
+         background: rgba(252, 231, 243, 0.95); 
+         border: 1px solid rgba(236, 72, 153, 0.3);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(236, 72, 153, 0.2);
+         color: #be185d;
+         }
+         body.cherry-blossom .completion-content h2 { color: #ec4899; }
+         body.cherry-blossom .completion-content p { color: #db2777; }
          /* Components reused */
          .date-display { border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 30px; }
          .date-display h2 { font-size: 1.2rem; font-weight: 600; }
@@ -991,13 +1037,13 @@
          }
          .completion-content {
          text-align: center;
-         background: white;
          padding: 40px;
          border-radius: 20px;
          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
          transform: scale(0.8);
          transition: transform 0.5s ease;
          z-index: 2001;
+         backdrop-filter: blur(10px);
          }
          .completion-overlay.show .completion-content {
          transform: scale(1);
@@ -1010,11 +1056,9 @@
          .completion-content h2 {
          font-size: 2rem;
          margin-bottom: 10px;
-         color: #22c55e;
          }
          .completion-content p {
          font-size: 1.1rem;
-         color: #666;
          margin-bottom: 0;
          }
          
