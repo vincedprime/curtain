@@ -70,8 +70,9 @@
          padding: 20px;
          }
          .header { text-align: center; margin-bottom: 40px; }
-         .header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
-         .header p { font-size: 1.1rem; }
+         .header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 4px; }
+         .header h2 { font-size: 1.4rem; font-weight: 500; margin-bottom: 16px; margin-top: 8px; }
+         .header p { font-size: 1.1rem; opacity: 0.8; }
          .theme-toggle {
          position: absolute;
          top: 20px;
@@ -88,6 +89,25 @@
          .theme-toggle:hover {
          transform: scale(1.1);
          }
+         
+         .top-left-info {
+         position: absolute;
+         top: 20px;
+         left: 20px;
+         display: flex;
+         align-items: center;
+         gap: 15px;
+         z-index: 2;
+         }
+         
+         .date-info {
+         padding: 8px 16px;
+         border-radius: 8px;
+         font-size: 0.9rem;
+         font-weight: 500;
+         transition: all 0.5s ease;
+         }
+         
          /* Sun Design */
          .sun {
          width: 100%;
@@ -107,8 +127,8 @@
          border-radius: 50%;
          background: rgba(255, 255, 255, 0.8);
          box-shadow: 
-         12px 5px 0 -2px rgba(255, 255, 255, 0.6),
-         8px 15px 0 -3px rgba(255, 255, 255, 0.4);
+           12px 5px 0 -2px rgba(255, 255, 255, 0.6),
+           8px 15px 0 -3px rgba(255, 255, 255, 0.4);
          }
          .sun::after {
          content: '';
@@ -119,29 +139,30 @@
          bottom: -10px;
          border-radius: 50%;
          background: conic-gradient(
-         transparent 0deg,
-         rgba(255, 193, 7, 0.3) 20deg,
-         transparent 40deg,
-         rgba(255, 193, 7, 0.3) 60deg,
-         transparent 80deg,
-         rgba(255, 193, 7, 0.3) 100deg,
-         transparent 120deg,
-         rgba(255, 193, 7, 0.3) 140deg,
-         transparent 160deg,
-         rgba(255, 193, 7, 0.3) 180deg,
-         transparent 200deg,
-         rgba(255, 193, 7, 0.3) 220deg,
-         transparent 240deg,
-         rgba(255, 193, 7, 0.3) 260deg,
-         transparent 280deg,
-         rgba(255, 193, 7, 0.3) 300deg,
-         transparent 320deg,
-         rgba(255, 193, 7, 0.3) 340deg,
-         transparent 360deg
+           transparent 0deg,
+           rgba(255, 193, 7, 0.3) 20deg,
+           transparent 40deg,
+           rgba(255, 193, 7, 0.3) 60deg,
+           transparent 80deg,
+           rgba(255, 193, 7, 0.3) 100deg,
+           transparent 120deg,
+           rgba(255, 193, 7, 0.3) 140deg,
+           transparent 160deg,
+           rgba(255, 193, 7, 0.3) 180deg,
+           transparent 200deg,
+           rgba(255, 193, 7, 0.3) 220deg,
+           transparent 240deg,
+           rgba(255, 193, 7, 0.3) 260deg,
+           transparent 280deg,
+           rgba(255, 193, 7, 0.3) 300deg,
+           transparent 320deg,
+           rgba(255, 193, 7, 0.3) 340deg,
+           transparent 360deg
          );
          animation: rotate 20s linear infinite;
          z-index: -1;
          }
+         
          /* Moon Design */
          .moon {
          width: 100%;
@@ -161,9 +182,9 @@
          border-radius: 50%;
          background: rgba(160, 160, 160, 0.6);
          box-shadow: 
-         15px 8px 0 -1px rgba(160, 160, 160, 0.4),
-         8px 20px 0 -2px rgba(160, 160, 160, 0.5),
-         25px 25px 0 -3px rgba(160, 160, 160, 0.3);
+           15px 8px 0 -1px rgba(160, 160, 160, 0.4),
+           8px 20px 0 -2px rgba(160, 160, 160, 0.5),
+           25px 25px 0 -3px rgba(160, 160, 160, 0.3);
          }
          .moon::after {
          content: '';
@@ -175,9 +196,10 @@
          border-radius: 50%;
          background: rgba(160, 160, 160, 0.4);
          box-shadow: 
-         -10px 15px 0 1px rgba(160, 160, 160, 0.3),
-         -5px 25px 0 -1px rgba(160, 160, 160, 0.2);
+           -10px 15px 0 1px rgba(160, 160, 160, 0.3),
+           -5px 25px 0 -1px rgba(160, 160, 160, 0.2);
          }
+         
          @keyframes rotate {
          from { transform: rotate(0deg); }
          to { transform: rotate(360deg); }
@@ -196,6 +218,10 @@
          body.light .progress-bar { background: #ddd; }
          body.light .progress-fill { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
          body.light .habit-item.completed { background: #e6ffe6; border-color: #22c55e; }
+         body.light .footer-info { background: rgba(255, 255, 255, 0.6); color: #666; border: 1px solid rgba(204, 204, 204, 0.5); }
+         body.light .date-info { background: rgba(255, 255, 255, 0.8); color: #333; border: 1px solid rgba(204, 204, 204, 0.3); }
+         body.light .add-habit { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(204, 204, 204, 0.2); }
+         body.light .add-habit input:focus { border-color: #60a5fa; }
          body.light .stars { display: none; }
          body.light .clouds { display: block; }
          /* Dark Theme */
@@ -210,32 +236,245 @@
          body.dark .habit-item,
          body.dark .modal { background: #1a1a1a; border: 1px solid #333; color: #e5e5e5; }
          body.dark .progress-bar { background: #333; }
-         body.dark .progress-fill { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+         body.dark .progress-fill { background: linear-gradient(90deg, #38bdf8, #0ea5e9); }
          body.dark .habit-item.completed { background: #0f2a1a; border-color: #22c55e; }
+         body.dark .footer-info { background: rgba(26, 26, 26, 0.6); color: #a3a3a3; border: 1px solid rgba(51, 51, 51, 0.5); }
+         body.dark .date-info { background: rgba(26, 26, 26, 0.8); color: #e5e5e5; border: 1px solid rgba(51, 51, 51, 0.3); }
+         body.dark .add-habit { background: rgba(26, 26, 26, 0.4); border: 1px solid rgba(51, 51, 51, 0.2); }
+         body.dark .add-habit input:focus { border-color: #60a5fa; }
+         body.dark .secondary-reset-btn {
+         color: #9ca3af;
+         border-color: #374151;
+         }
+         body.dark .secondary-reset-btn:hover {
+         background: #1f2937;
+         border-color: #6b7280;
+         color: #d1d5db;
+         }
+         body.dark .secondary-delete-btn {
+         color: #f87171;
+         border-color: #7f1d1d;
+         }
+         body.dark .secondary-delete-btn:hover {
+         background: #1f1917;
+         border-color: #dc2626;
+         color: #fca5a5;
+         }
          body.dark .clouds { display: none; }
          body.dark .stars { display: block; }
          /* Components reused */
          .date-display { border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 30px; }
          .date-display h2 { font-size: 1.2rem; font-weight: 600; }
-         .add-habit { display: flex; gap: 12px; margin-bottom: 30px; }
-         .add-habit input { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 1rem; border: 1px solid; }
-         .add-btn { padding: 12px 24px; background: #60a5fa; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+         .add-habit { 
+         display: flex; 
+         gap: 16px; 
+         margin-bottom: 40px; 
+         padding: 20px;
+         border-radius: 12px;
+         transition: all 0.3s ease;
+         }
+         .add-habit input { 
+         flex: 1; 
+         padding: 14px 18px; 
+         border-radius: 10px; 
+         font-size: 1rem; 
+         border: 2px solid; 
+         transition: all 0.2s ease;
+         }
+         .add-habit input:focus {
+         outline: none;
+         transform: translateY(-1px);
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+         }
+         .add-btn { 
+         padding: 12px 20px; 
+         background: #60a5fa; 
+         color: white; 
+         border: none; 
+         border-radius: 8px; 
+         font-weight: 600; 
+         cursor: pointer; 
+         transition: background-color 0.2s;
+         display: flex;
+         align-items: center;
+         gap: 8px;
+         }
          .add-btn:hover { background: #3b82f6; }
+         .add-btn::before {
+         content: '';
+         width: 14px;
+         height: 14px;
+         background: 
+           linear-gradient(white, white) center/2px 14px no-repeat,
+           linear-gradient(white, white) center/14px 2px no-repeat;
+         }
          .progress-section { margin-bottom: 30px; }
          .progress-bar { width: 100%; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
          .progress-fill { height: 100%; transition: width 0.3s ease; width: 0%; }
-         .progress-text { text-align: center; font-size: 0.9rem; }
-         .reset-btn { margin-top: 12px; padding: 10px 20px; background: #333; color: #e5e5e5; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; width: 100%; }
-         .reset-btn:hover { background: #444; }
-         .habit-item { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 8px; margin-bottom: 12px; transition: all 0.2s; }
+         .progress-text { text-align: center; font-size: 0.9rem; margin-bottom: 12px; }
+         .action-buttons { display: flex; gap: 12px; }
+         .reset-btn, .delete-all-btn { 
+         flex: 1;
+         padding: 10px 16px; 
+         border: none; 
+         border-radius: 8px; 
+         font-weight: 600; 
+         cursor: pointer; 
+         transition: all 0.2s;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         gap: 6px;
+         font-size: 0.9rem;
+         }
+         .reset-btn { 
+         background: #9ca3af; 
+         color: white; 
+         }
+         .reset-btn:hover { 
+         background: #6b7280; 
+         transform: translateY(-1px);
+         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+         }
+         .delete-all-btn { 
+         background: #dc2626; 
+         color: white; 
+         opacity: 0.8;
+         }
+         .delete-all-btn:hover { 
+         background: #b91c1c; 
+         opacity: 1;
+         transform: translateY(-1px);
+         }
+         
+         /* Reset icon */
+         .reset-btn::before {
+         content: '';
+         width: 12px;
+         height: 12px;
+         border: 2px solid currentColor;
+         border-radius: 50%;
+         border-top-color: transparent;
+         border-right-color: transparent;
+         }
+         
+         /* Delete all icon */
+         .delete-all-btn::before {
+         content: '';
+         width: 12px;
+         height: 14px;
+         background: 
+           linear-gradient(currentColor, currentColor) center top/8px 2px no-repeat,
+           linear-gradient(currentColor, currentColor) center/6px 10px no-repeat;
+         background-position: center 1px, center 4px;
+         }
+         .habit-item { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 8px; margin-bottom: 12px; transition: all 0.2s; }
          .habit-checkbox { width: 20px; height: 20px; border: 2px solid #666; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
          .habit-checkbox.checked { background: #22c55e; border-color: #22c55e; }
          .habit-checkbox.checked::after { content: '✓'; color: white; font-weight: bold; font-size: 14px; }
          .habit-text { flex: 1; font-size: 1rem; }
-         .habit-item.completed .habit-text { text-decoration: line-through; opacity: 0.7; }
-         .delete-btn { background: none; border: none; color: #ef4444; cursor: pointer; padding: 4px; border-radius: 4px; transition: background-color 0.2s; }
-         .delete-btn:hover { background: #2a1a1a; }
-         .empty-state { text-align: center; padding: 40px 20px; }
+         .habit-item.completed .habit-text { opacity: 0.5; text-decoration: none; }
+         .delete-btn-container { margin-left: 8px; }
+         .delete-btn { 
+         background: none; 
+         border: none; 
+         cursor: pointer; 
+         padding: 8px; 
+         border-radius: 4px; 
+         transition: all 0.2s;
+         position: relative;
+         width: 24px;
+         height: 24px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         }
+         .delete-btn:hover { background: rgba(239, 68, 68, 0.1); }
+         .delete-btn::before,
+         .delete-btn::after {
+         content: '';
+         position: absolute;
+         width: 12px;
+         height: 2px;
+         background: #ef4444;
+         border-radius: 1px;
+         }
+         .delete-btn::before { transform: rotate(45deg); }
+         .delete-btn::after { transform: rotate(-45deg); }
+         
+         /* Bottom Actions */
+         .bottom-actions {
+         display: flex;
+         gap: 12px;
+         justify-content: center;
+         margin: 20px 0;
+         padding: 0 20px;
+         }
+         
+         .secondary-reset-btn, .secondary-delete-btn {
+         padding: 8px 16px;
+         border: 1px solid;
+         border-radius: 6px;
+         font-weight: 500;
+         font-size: 0.85rem;
+         cursor: pointer;
+         transition: all 0.2s ease;
+         background: transparent;
+         min-width: 80px;
+         }
+         
+         .secondary-reset-btn {
+         color: #6b7280;
+         border-color: #d1d5db;
+         }
+         .secondary-reset-btn:hover {
+         background: #f9fafb;
+         border-color: #9ca3af;
+         color: #4b5563;
+         }
+         
+         .secondary-delete-btn {
+         color: #dc2626;
+         border-color: #fca5a5;
+         }
+         .secondary-delete-btn:hover {
+         background: #fef2f2;
+         border-color: #dc2626;
+         color: #b91c1c;
+         }
+         .empty-state { 
+         text-align: center; 
+         padding: 60px 20px; 
+         }
+         .empty-state h3 { 
+         font-size: 1.5rem; 
+         margin-bottom: 12px; 
+         opacity: 0.8;
+         }
+         .empty-state p { 
+         font-size: 1.1rem; 
+         opacity: 0.6; 
+         line-height: 1.6;
+         }
+         .empty-state .emoji { 
+         font-size: 3rem; 
+         margin-bottom: 20px; 
+         display: block;
+         }
+         .footer-info {
+         text-align: center;
+         margin-top: 30px;
+         padding: 20px;
+         border-radius: 8px;
+         font-size: 0.9rem;
+         opacity: 0.8;
+         line-height: 1.5;
+         }
+         .footer-info .reset-icon {
+         display: inline-block;
+         margin-right: 8px;
+         font-size: 1.1rem;
+         }
          .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
          .modal-overlay.show { opacity: 1; visibility: visible; }
          .modal { border-radius: 12px; padding: 24px; max-width: 400px; width: 90%; transform: scale(0.9); transition: transform 0.3s ease; }
@@ -243,25 +482,35 @@
          .modal h3 { font-size: 1.2rem; margin-bottom: 16px; text-align: center; }
          .modal-buttons { display: flex; gap: 12px; justify-content: center; }
          .modal-btn { padding: 10px 20px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: all 0.2s; min-width: 80px; }
-         .modal-btn.cancel { background: #333; color: #e5e5e5; }
+         .modal-btn.cancel { background: #6b7280; color: #e5e5e5; }
+         .modal-btn.cancel:hover { background: #4b5563; }
          .modal-btn.confirm { background: #ef4444; color: white; }
+         .modal-btn.confirm:hover { background: #dc2626; }
+         .modal-btn.ok { background: #60a5fa; color: white; }
+         .modal-btn.ok:hover { background: #3b82f6; }
       </style>
    </head>
    <body class="dark">
       <!-- Background Elements -->
       <div class="stars" id="stars"></div>
       <div class="clouds" id="clouds"></div>
+      
+      <!-- Top Left Info -->
+      <div class="top-left-info">
+         <div class="date-info" id="current-date"></div>
+      </div>
+      
+      <!-- Theme Toggle -->
       <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle">
          <div class="sun"></div>
          <div class="moon"></div>
       </button>
       <div class="container">
          <div class="header">
-            <h1>Curtain - Complete your daily habits</h1>
+            <h1>Curtain</h1>
+            <br>
+            <h2>Complete your daily habits</h2>
             <p>Build better habits, one day at a time</p>
-         </div>
-         <div class="date-display">
-            <h2 id="current-date"></h2>
          </div>
          <div class="add-habit">
             <input type="text" id="habit-input" placeholder="Add a new habit" maxlength="100">
@@ -272,13 +521,21 @@
                <div class="progress-fill" id="progress-fill"></div>
             </div>
             <div class="progress-text" id="progress-text">0 of 0 habits completed</div>
-            <button class="reset-btn" onclick="resetCompleted()">Reset Completed</button>
          </div>
          <div class="habits-list" id="habits-list">
             <div class="empty-state">
                <h3>No habits yet</h3>
                <p>Add your first habit above to get started!</p>
             </div>
+         </div>
+         <div class="bottom-actions" id="bottom-actions">
+            <button class="secondary-reset-btn" onclick="resetCompleted()">Reset</button>
+            <button class="secondary-delete-btn" onclick="deleteAllHabits()">Delete All</button>
+         </div>
+         <div class="footer-info">
+            All completed habits will automatically reset at midnight.
+            <br>
+            Start fresh each day to build consistent habits!
          </div>
       </div>
       <!-- Delete Modal -->
@@ -291,9 +548,31 @@
             </div>
          </div>
       </div>
+      
+      <!-- Alert Modal -->
+      <div class="modal-overlay" id="alert-modal">
+         <div class="modal">
+            <h3 id="alert-message"></h3>
+            <div class="modal-buttons">
+               <button class="modal-btn ok" onclick="hideAlertModal()">OK</button>
+            </div>
+         </div>
+      </div>
+      
+      <!-- Confirm Modal -->
+      <div class="modal-overlay" id="confirm-modal">
+         <div class="modal">
+            <h3 id="confirm-message"></h3>
+            <div class="modal-buttons">
+               <button class="modal-btn cancel" onclick="hideConfirmModal(false)">Cancel</button>
+               <button class="modal-btn confirm" onclick="hideConfirmModal(true)">OK</button>
+            </div>
+         </div>
+      </div>
       <script>
          let habits = [];
          let habitToDelete = null;
+         let confirmCallback = null;
          
          function init() {
            displayCurrentDate();
@@ -332,8 +611,8 @@
          function addHabit() {
            const input = document.getElementById('habit-input');
            const habitText = input.value.trim();
-           if (!habitText) return alert('Please enter a habit!');
-           if (habits.some(h => h.text.toLowerCase() === habitText.toLowerCase())) return alert('This habit already exists!');
+           if (!habitText) return showAlert('Please enter a habit!');
+           if (habits.some(h => h.text.toLowerCase() === habitText.toLowerCase())) return showAlert('This habit already exists!');
            habits.push({ id: Date.now(), text: habitText, completed: false });
            input.value = '';
            saveHabits(); renderHabits(); updateProgress();
@@ -347,6 +626,27 @@
          function deleteHabit(id) { habitToDelete = id; showDeleteModal(); }
          function showDeleteModal() { document.getElementById('delete-modal').classList.add('show'); }
          function hideDeleteModal() { document.getElementById('delete-modal').classList.remove('show'); habitToDelete = null; }
+         
+         // Custom Alert Modal
+         function showAlert(message) {
+           document.getElementById('alert-message').textContent = message;
+           document.getElementById('alert-modal').classList.add('show');
+         }
+         function hideAlertModal() { document.getElementById('alert-modal').classList.remove('show'); }
+         
+         // Custom Confirm Modal
+         function showConfirm(message, callback) {
+           document.getElementById('confirm-message').textContent = message;
+           confirmCallback = callback;
+           document.getElementById('confirm-modal').classList.add('show');
+         }
+         function hideConfirmModal(result) {
+           document.getElementById('confirm-modal').classList.remove('show');
+           if (confirmCallback) {
+             confirmCallback(result);
+             confirmCallback = null;
+           }
+         }
          function confirmDelete() {
            if (habitToDelete !== null) {
              habits = habits.filter(h => h.id !== habitToDelete);
@@ -357,15 +657,28 @@
          
          function renderHabits() {
            const list = document.getElementById('habits-list');
+           const footer = document.querySelector('.footer-info');
+           const progressSection = document.querySelector('.progress-section');
+           const bottomActions = document.getElementById('bottom-actions');
+           
            if (habits.length === 0) {
-             list.innerHTML = `<div class="empty-state"><h3>No habits yet</h3><p>Add your first habit above to get started!</p></div>`;
+             list.innerHTML = `<div class="empty-state"><span class="emoji">🌱</span><h3>Ready to build great habits?</h3><p>Add your first habit above to get started on your journey!</p></div>`;
+             footer.style.display = 'none';
+             progressSection.style.display = 'none';
+             bottomActions.style.display = 'none';
              return;
            }
+           
+           footer.style.display = 'block';
+           progressSection.style.display = 'block';
+           bottomActions.style.display = 'flex';
            list.innerHTML = habits.map(habit => `
              <div class="habit-item ${habit.completed ? 'completed' : ''}">
                <div class="habit-checkbox ${habit.completed ? 'checked' : ''}" onclick="toggleHabit(${habit.id})"></div>
                <span class="habit-text">${habit.text}</span>
-               <button class="delete-btn" onclick="deleteHabit(${habit.id})">×</button>
+               <div class="delete-btn-container">
+                 <button class="delete-btn" onclick="deleteHabit(${habit.id})"></button>
+               </div>
              </div>
            `).join('');
          }
@@ -381,6 +694,16 @@
          function resetCompleted() {
            habits = habits.map(h => ({ ...h, completed: false }));
            saveHabits(); renderHabits(); updateProgress();
+         }
+         
+         function deleteAllHabits() {
+           if (habits.length === 0) return;
+           showConfirm('Are you sure you want to delete all habits? This action cannot be undone.', (confirmed) => {
+             if (confirmed) {
+               habits = [];
+               saveHabits(); renderHabits(); updateProgress();
+             }
+           });
          }
          
          // Theme toggle
@@ -427,6 +750,8 @@
          document.getElementById('habit-input').addEventListener('keypress', e => { if (e.key === 'Enter') addHabit(); });
          document.addEventListener('DOMContentLoaded', init);
          document.getElementById('delete-modal').addEventListener('click', e => { if (e.target === e.currentTarget) hideDeleteModal(); });
+         document.getElementById('alert-modal').addEventListener('click', e => { if (e.target === e.currentTarget) hideAlertModal(); });
+         document.getElementById('confirm-modal').addEventListener('click', e => { if (e.target === e.currentTarget) hideConfirmModal(false); });
       </script>
    </body>
 </html>
