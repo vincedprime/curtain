@@ -3,7 +3,7 @@
    <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <title>Daily Habit Tracker with Theme Toggle</title>
+      <title>Check you daily habits behind the curtains</title>
       <style>
          * { margin: 0; padding: 0; box-sizing: border-box; }
          body {
@@ -15,7 +15,7 @@
          overflow-x: hidden;
          }
          /* Background Layers */
-         .stars, .clouds {
+         .stars, .clouds, .waves, .leaves, .petals {
          position: fixed;
          top: 0; left: 0;
          width: 100%; height: 100%;
@@ -61,6 +61,79 @@
          width: 60%; height: 60%;
          top: 10px; left: -30px;
          }
+         
+         /* Waves */
+         .wave {
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         width: 200%;
+         height: 100px;
+         background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent);
+         border-radius: 50%;
+         animation: wave-motion 12s ease-in-out infinite;
+         }
+         .wave:nth-child(2) {
+         animation-delay: -4s;
+         height: 80px;
+         opacity: 0.6;
+         }
+         .wave:nth-child(3) {
+         animation-delay: -8s;
+         height: 60px;
+         opacity: 0.4;
+         }
+         @keyframes wave-motion {
+         0%, 100% { transform: translateX(-50%) translateY(0px); }
+         50% { transform: translateX(-50%) translateY(-15px); }
+         }
+         
+         /* Bubbles */
+         .bubble {
+         position: absolute;
+         border-radius: 50%;
+         background: rgba(236, 254, 255, 0.6);
+         animation: bubble-rise 6s linear infinite;
+         }
+         @keyframes bubble-rise {
+         0% { transform: translateY(0) scale(0); opacity: 0; }
+         10% { opacity: 1; }
+         90% { opacity: 1; }
+         100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+         }
+         
+         /* Leaves */
+         .leaf {
+         position: absolute;
+         width: 12px;
+         height: 12px;
+         background: #22c55e;
+         border-radius: 0 100% 0 100%;
+         animation: leaf-fall 8s linear infinite;
+         }
+         .leaf:nth-child(2n) { background: #16a34a; }
+         .leaf:nth-child(3n) { background: #15803d; }
+         @keyframes leaf-fall {
+         0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+         100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+         }
+         
+         /* Petals */
+         .petal {
+         position: absolute;
+         width: 8px;
+         height: 8px;
+         background: #ec4899;
+         border-radius: 50% 0 50% 0;
+         animation: petal-fall 10s linear infinite;
+         }
+         .petal:nth-child(2n) { background: #db2777; }
+         .petal:nth-child(3n) { background: #be185d; }
+         @keyframes petal-fall {
+         0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+         50% { transform: translateY(50vh) rotate(180deg) scale(0.8); }
+         100% { transform: translateY(100vh) rotate(360deg) scale(0.6); opacity: 0; }
+         }
          /* Content container */
          .container {
          position: relative;
@@ -72,7 +145,23 @@
          .header { text-align: center; margin-bottom: 40px; }
          .header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 4px; }
          .header h2 { font-size: 1.4rem; font-weight: 500; margin-bottom: 16px; margin-top: 8px; }
-         .header p { font-size: 1.1rem; opacity: 0.8; }
+         .header p { font-size: 1.1rem; opacity: 0.8; margin-bottom: 20px; }
+         .daily-quote {
+         font-style: italic;
+         font-size: 0.95rem;
+         opacity: 0.7;
+         max-width: 400px;
+         margin: 0 auto;
+         line-height: 1.4;
+         }
+         .quote-text {
+         display: block;
+         margin-bottom: 4px;
+         }
+         .quote-author {
+         font-size: 0.85rem;
+         opacity: 0.6;
+         }
          .theme-toggle {
          position: absolute;
          top: 20px;
@@ -90,10 +179,104 @@
          transform: scale(1.1);
          }
          
+         /* Theme Dropdown */
+         .theme-dropdown {
+         position: relative;
+         }
+         .theme-dropdown-toggle {
+         width: 60px;
+         height: 60px;
+         border: none;
+         border-radius: 50%;
+         cursor: pointer;
+         z-index: 2;
+         transition: all 0.3s ease;
+         overflow: hidden;
+         background: transparent;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         position: relative;
+         }
+         .theme-dropdown-toggle:hover {
+         transform: scale(1.1);
+         }
+         .current-theme-icon {
+         width: 100%;
+         height: 100%;
+         position: relative;
+         }
+         .dropdown-arrow {
+         position: absolute;
+         bottom: 2px;
+         right: 2px;
+         font-size: 8px;
+         opacity: 0.7;
+         transition: transform 0.3s ease;
+         }
+         .theme-dropdown.open .dropdown-arrow {
+         transform: rotate(180deg);
+         }
+         .theme-dropdown-menu {
+         position: absolute;
+         top: 70px;
+         right: 0;
+         min-width: 200px;
+         border-radius: 12px;
+         padding: 8px;
+         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+         backdrop-filter: blur(10px);
+         opacity: 0;
+         visibility: hidden;
+         transform: translateY(-10px);
+         transition: all 0.3s ease;
+         z-index: 1000;
+         }
+         .theme-dropdown.open .theme-dropdown-menu {
+         opacity: 1;
+         visibility: visible;
+         transform: translateY(0);
+         }
+         .theme-dropdown-option {
+         display: flex;
+         align-items: center;
+         gap: 12px;
+         padding: 12px;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: all 0.2s ease;
+         border: 2px solid transparent;
+         }
+         .theme-dropdown-option:hover {
+         transform: translateX(4px);
+         }
+         .theme-dropdown-option.active {
+         border-color: currentColor;
+         }
+         .theme-dropdown-option .theme-preview {
+         width: 24px;
+         height: 24px;
+         flex-shrink: 0;
+         }
+         .theme-dropdown-option .theme-name {
+         font-size: 0.9rem;
+         font-weight: 500;
+         }
+         
          .top-left-info {
          position: absolute;
          top: 20px;
          left: 20px;
+         display: flex;
+         align-items: center;
+         gap: 15px;
+         z-index: 2;
+         }
+         
+         .top-right-info {
+         position: absolute;
+         top: 20px;
+         right: 20px;
          display: flex;
          align-items: center;
          gap: 15px;
@@ -200,68 +383,324 @@
            -5px 25px 0 -1px rgba(160, 160, 160, 0.2);
          }
          
+         /* Bubble Icon */
+         .bubble-icon {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.3) 30%, rgba(6, 182, 212, 0.8) 70%, rgba(14, 116, 144, 0.9));
+         position: relative;
+         box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), inset -5px -5px 10px rgba(14, 116, 144, 0.3);
+         border: 2px solid rgba(255, 255, 255, 0.3);
+         }
+         .bubble-icon::before {
+         content: '';
+         position: absolute;
+         top: 15%;
+         left: 20%;
+         width: 12px;
+         height: 8px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.9);
+         box-shadow: 
+           18px 8px 0 -4px rgba(255, 255, 255, 0.7),
+           6px 25px 0 -6px rgba(255, 255, 255, 0.5);
+         }
+         .bubble-icon::after {
+         content: '';
+         position: absolute;
+         top: 60%;
+         right: 20%;
+         width: 4px;
+         height: 4px;
+         border-radius: 50%;
+         background: rgba(255, 255, 255, 0.6);
+         }
+         
+         /* Leaf Icon */
+         .leaf-icon {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 30% 30%, #dcfce7, #22c55e 40%, #16a34a 70%, #15803d);
+         position: relative;
+         box-shadow: 0 0 20px rgba(34, 197, 94, 0.6);
+         }
+         .leaf-icon::before {
+         content: '';
+         position: absolute;
+         top: 25%;
+         left: 25%;
+         width: 12px;
+         height: 12px;
+         background: rgba(255, 255, 255, 0.9);
+         border-radius: 0 100% 0 100%;
+         box-shadow: 
+           15px 8px 0 -2px rgba(255, 255, 255, 0.7),
+           8px 18px 0 -3px rgba(255, 255, 255, 0.5);
+         }
+         
+         /* Petal Icon */
+         .petal-icon {
+         width: 100%;
+         height: 100%;
+         border-radius: 50%;
+         background: radial-gradient(circle at 30% 30%, #fdf2f8, #ec4899 40%, #db2777 70%, #be185d);
+         position: relative;
+         box-shadow: 0 0 20px rgba(236, 72, 153, 0.6);
+         }
+         .petal-icon::before {
+         content: '';
+         position: absolute;
+         top: 22%;
+         left: 28%;
+         width: 8px;
+         height: 8px;
+         background: rgba(255, 255, 255, 0.9);
+         border-radius: 50% 0 50% 0;
+         box-shadow: 
+           12px 6px 0 -1px rgba(255, 255, 255, 0.7),
+           6px 15px 0 -2px rgba(255, 255, 255, 0.5),
+           18px 18px 0 -3px rgba(255, 255, 255, 0.4);
+         }
+         
          @keyframes rotate {
          from { transform: rotate(0deg); }
          to { transform: rotate(360deg); }
          }
-         /* Light Theme */
-         body.light { background: linear-gradient(to top, #87ceeb, #fdfdfd); color: #222; }
-         body.light .theme-toggle { background: transparent; }
-         body.light .sun { display: block; }
-         body.light .moon { display: none; }
-         body.light .header h1 { color: #333; }
-         body.light .header p { color: #555; }
-         body.light .date-display,
-         body.light .add-habit input,
-         body.light .habit-item,
-         body.light .modal { background: #ffffff; border: 1px solid #ccc; color: #222; }
-         body.light .progress-bar { background: #ddd; }
-         body.light .progress-fill { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
-         body.light .habit-item.completed { background: #e6ffe6; border-color: #22c55e; }
-         body.light .footer-info { background: rgba(255, 255, 255, 0.6); color: #666; border: 1px solid rgba(204, 204, 204, 0.5); }
-         body.light .date-info { background: rgba(255, 255, 255, 0.8); color: #333; border: 1px solid rgba(204, 204, 204, 0.3); }
-         body.light .add-habit { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(204, 204, 204, 0.2); }
-         body.light .add-habit input:focus { border-color: #60a5fa; }
-         body.light .stars { display: none; }
-         body.light .clouds { display: block; }
-         /* Dark Theme */
-         body.dark { background: linear-gradient(to top, #0f0f0f, #1a1a2e); color: #e5e5e5; }
-         body.dark .theme-toggle { background: transparent; }
-         body.dark .sun { display: none; }
-         body.dark .moon { display: block; }
-         body.dark .header h1 { color: #fff; }
-         body.dark .header p { color: #a3a3a3; }
-         body.dark .date-display,
-         body.dark .add-habit input,
-         body.dark .habit-item,
-         body.dark .modal { background: #1a1a1a; border: 1px solid #333; color: #e5e5e5; }
-         body.dark .progress-bar { background: #333; }
-         body.dark .progress-fill { background: linear-gradient(90deg, #38bdf8, #0ea5e9); }
-         body.dark .habit-item.completed { background: #0f2a1a; border-color: #22c55e; }
-         body.dark .footer-info { background: rgba(26, 26, 26, 0.6); color: #a3a3a3; border: 1px solid rgba(51, 51, 51, 0.5); }
-         body.dark .date-info { background: rgba(26, 26, 26, 0.8); color: #e5e5e5; border: 1px solid rgba(51, 51, 51, 0.3); }
-         body.dark .add-habit { background: rgba(26, 26, 26, 0.4); border: 1px solid rgba(51, 51, 51, 0.2); }
-         body.dark .add-habit input:focus { border-color: #60a5fa; }
-         body.dark .secondary-reset-btn {
-         color: #9ca3af;
-         border-color: #374151;
+         /* Starry Night Theme */
+         body.starry-night { background: linear-gradient(to top, #0f0f0f, #1a1a2e); color: #e5e5e5; }
+         body.starry-night .theme-toggle { background: transparent; }
+         body.starry-night .sun, body.starry-night .bubble-icon, body.starry-night .leaf-icon, body.starry-night .petal-icon { display: none; }
+         body.starry-night .moon { display: block; }
+         body.starry-night .header h1 { color: #fff; }
+         body.starry-night .header p { color: #a3a3a3; }
+         body.starry-night .date-display, body.starry-night .add-habit input, body.starry-night .habit-item, body.starry-night .modal { background: #1a1a1a; border: 1px solid #333; color: #e5e5e5; }
+         body.starry-night .progress-bar { background: #333; }
+         body.starry-night .progress-fill { background: linear-gradient(90deg, #38bdf8, #0ea5e9); }
+         body.starry-night .habit-item.completed { background: #0f2a1a; border-color: #22c55e; }
+         body.starry-night .footer-info { background: rgba(26, 26, 26, 0.6); color: #a3a3a3; border: 1px solid rgba(51, 51, 51, 0.5); }
+         body.starry-night .date-info { background: rgba(26, 26, 26, 0.8); color: #e5e5e5; border: 1px solid rgba(51, 51, 51, 0.3); }
+         body.starry-night .add-habit { background: rgba(26, 26, 26, 0.4); border: 1px solid rgba(51, 51, 51, 0.2); }
+         body.starry-night .add-habit input:focus { border-color: #60a5fa; }
+         body.starry-night .streak-counter { background: linear-gradient(135deg, #f97316, #ea580c); color: white; box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4); }
+         body.starry-night .habit-templates { background: rgba(26, 26, 26, 0.3); border: 1px solid rgba(51, 51, 51, 0.2); }
+         body.starry-night .template-btn { color: #d1d5db; border-color: #4b5563; }
+         body.starry-night .template-btn:hover { background: #374151; border-color: #6b7280; }
+         body.starry-night .secondary-reset-btn { color: #9ca3af; border-color: #374151; }
+         body.starry-night .secondary-reset-btn:hover { background: #1f2937; border-color: #6b7280; color: #d1d5db; }
+         body.starry-night .secondary-delete-btn { color: #f87171; border-color: #7f1d1d; }
+         body.starry-night .secondary-delete-btn:hover { background: #1f1917; border-color: #dc2626; color: #fca5a5; }
+         body.starry-night .add-btn { background: linear-gradient(135deg, #38bdf8, #0ea5e9); box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4); }
+         body.starry-night .add-btn:hover { box-shadow: 0 6px 20px rgba(56, 189, 248, 0.6); }
+         body.starry-night .clouds, body.starry-night .waves, body.starry-night .leaves, body.starry-night .petals { display: none; }
+         body.starry-night .stars { display: block; }
+
+         /* Cloudy Day Theme */
+         body.cloudy-day { background: linear-gradient(to top, #87ceeb, #fdfdfd); color: #222; }
+         body.cloudy-day .theme-toggle { background: transparent; }
+         body.cloudy-day .moon, body.cloudy-day .bubble-icon, body.cloudy-day .leaf-icon, body.cloudy-day .petal-icon { display: none; }
+         body.cloudy-day .sun { display: block; }
+         body.cloudy-day .header h1 { color: #333; }
+         body.cloudy-day .header p { color: #555; }
+         body.cloudy-day .date-display, body.cloudy-day .add-habit input, body.cloudy-day .habit-item, body.cloudy-day .modal { background: #ffffff; border: 1px solid #ccc; color: #222; }
+         body.cloudy-day .progress-bar { background: #ddd; }
+         body.cloudy-day .progress-fill { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+         body.cloudy-day .habit-item.completed { background: #e6ffe6; border-color: #22c55e; }
+         body.cloudy-day .footer-info { background: rgba(255, 255, 255, 0.6); color: #666; border: 1px solid rgba(204, 204, 204, 0.5); }
+         body.cloudy-day .date-info { background: rgba(255, 255, 255, 0.8); color: #333; border: 1px solid rgba(204, 204, 204, 0.3); }
+         body.cloudy-day .add-habit { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(204, 204, 204, 0.2); }
+         body.cloudy-day .add-habit input:focus { border-color: #60a5fa; }
+         body.cloudy-day .streak-counter { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3); }
+         body.cloudy-day .habit-templates { background: rgba(255, 255, 255, 0.3); border: 1px solid rgba(204, 204, 204, 0.2); }
+         body.cloudy-day .template-btn { color: #4b5563; border-color: #d1d5db; }
+         body.cloudy-day .template-btn:hover { background: #f9fafb; border-color: #9ca3af; }
+         body.cloudy-day .secondary-reset-btn { color: #6b7280; border-color: #d1d5db; }
+         body.cloudy-day .secondary-reset-btn:hover { background: #f9fafb; border-color: #9ca3af; color: #4b5563; }
+         body.cloudy-day .secondary-delete-btn { color: #dc2626; border-color: #fca5a5; }
+         body.cloudy-day .secondary-delete-btn:hover { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
+         body.cloudy-day .add-btn { background: linear-gradient(135deg, #fbbf24, #f59e0b); box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); }
+         body.cloudy-day .add-btn:hover { box-shadow: 0 6px 20px rgba(251, 191, 36, 0.6); }
+         body.cloudy-day .stars, body.cloudy-day .waves, body.cloudy-day .leaves, body.cloudy-day .petals { display: none; }
+         body.cloudy-day .clouds { display: block; }
+
+         /* Ocean Theme */
+         body.ocean { background: linear-gradient(to top, #1e3a8a, #0c4a6e); color: #ecfeff; }
+         body.ocean .theme-toggle { background: transparent; }
+         body.ocean .sun, body.ocean .moon, body.ocean .leaf-icon, body.ocean .petal-icon { display: none; }
+         body.ocean .bubble-icon { display: block; }
+         body.ocean .header h1 { color: #ecfeff; }
+         body.ocean .header p { color: #a5f3fc; }
+         body.ocean .date-display, body.ocean .add-habit input, body.ocean .habit-item, body.ocean .modal { background: rgba(20, 83, 109, 0.8); border: 1px solid #0891b2; color: #ecfeff; }
+         body.ocean .progress-bar { background: #0e7490; }
+         body.ocean .progress-fill { background: linear-gradient(90deg, #06b6d4, #0891b2); }
+         body.ocean .habit-item.completed { background: rgba(6, 182, 212, 0.2); border-color: #06b6d4; }
+         body.ocean .footer-info { background: rgba(20, 83, 109, 0.6); color: #a5f3fc; border: 1px solid rgba(8, 145, 178, 0.5); }
+         body.ocean .date-info { background: rgba(20, 83, 109, 0.8); color: #ecfeff; border: 1px solid rgba(8, 145, 178, 0.3); }
+         body.ocean .add-habit { background: rgba(20, 83, 109, 0.4); border: 1px solid rgba(8, 145, 178, 0.2); }
+         body.ocean .add-habit input:focus { border-color: #06b6d4; }
+         body.ocean .streak-counter { background: linear-gradient(135deg, #06b6d4, #0891b2); color: white; box-shadow: 0 2px 8px rgba(6, 182, 212, 0.4); }
+         body.ocean .habit-templates { background: rgba(20, 83, 109, 0.3); border: 1px solid rgba(8, 145, 178, 0.2); }
+         body.ocean .template-btn { color: #a5f3fc; border-color: #0891b2; }
+         body.ocean .template-btn:hover { background: rgba(6, 182, 212, 0.1); border-color: #06b6d4; }
+         body.ocean .secondary-reset-btn { color: #67e8f9; border-color: #0891b2; }
+         body.ocean .secondary-reset-btn:hover { background: rgba(6, 182, 212, 0.1); border-color: #06b6d4; color: #a5f3fc; }
+         body.ocean .secondary-delete-btn { color: #f87171; border-color: #7f1d1d; }
+         body.ocean .secondary-delete-btn:hover { background: rgba(239, 68, 68, 0.1); border-color: #dc2626; color: #fca5a5; }
+         body.ocean .add-btn { background: linear-gradient(135deg, #06b6d4, #0891b2); box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4); }
+         body.ocean .add-btn:hover { box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6); }
+         body.ocean .stars, body.ocean .clouds, body.ocean .leaves, body.ocean .petals { display: none; }
+         body.ocean .waves { display: block; }
+
+         /* Forest Theme */
+         body.forest { background: linear-gradient(to top, #064e3b, #166534); color: #dcfce7; }
+         body.forest .theme-toggle { background: transparent; }
+         body.forest .sun, body.forest .moon, body.forest .bubble-icon, body.forest .petal-icon { display: none; }
+         body.forest .leaf-icon { display: block; }
+         body.forest .header h1 { color: #dcfce7; }
+         body.forest .header p { color: #bbf7d0; }
+         body.forest .date-display, body.forest .add-habit input, body.forest .habit-item, body.forest .modal { background: rgba(20, 83, 45, 0.8); border: 1px solid #16a34a; color: #dcfce7; }
+         body.forest .progress-bar { background: #15803d; }
+         body.forest .progress-fill { background: linear-gradient(90deg, #10b981, #059669); }
+         body.forest .habit-item.completed { background: rgba(34, 197, 94, 0.2); border-color: #22c55e; }
+         body.forest .footer-info { background: rgba(20, 83, 45, 0.6); color: #bbf7d0; border: 1px solid rgba(22, 163, 74, 0.5); }
+         body.forest .date-info { background: rgba(20, 83, 45, 0.8); color: #dcfce7; border: 1px solid rgba(22, 163, 74, 0.3); }
+         body.forest .add-habit { background: rgba(20, 83, 45, 0.4); border: 1px solid rgba(22, 163, 74, 0.2); }
+         body.forest .add-habit input:focus { border-color: #22c55e; }
+         body.forest .streak-counter { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4); }
+         body.forest .habit-templates { background: rgba(20, 83, 45, 0.3); border: 1px solid rgba(22, 163, 74, 0.2); }
+         body.forest .template-btn { color: #bbf7d0; border-color: #16a34a; }
+         body.forest .template-btn:hover { background: rgba(34, 197, 94, 0.1); border-color: #22c55e; }
+         body.forest .secondary-reset-btn { color: #86efac; border-color: #16a34a; }
+         body.forest .secondary-reset-btn:hover { background: rgba(34, 197, 94, 0.1); border-color: #22c55e; color: #bbf7d0; }
+         body.forest .secondary-delete-btn { color: #f87171; border-color: #7f1d1d; }
+         body.forest .secondary-delete-btn:hover { background: rgba(239, 68, 68, 0.1); border-color: #dc2626; color: #fca5a5; }
+         body.forest .add-btn { background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 4px 15px rgba(34, 197, 94, 0.4); }
+         body.forest .add-btn:hover { box-shadow: 0 6px 20px rgba(34, 197, 94, 0.6); }
+         body.forest .stars, body.forest .clouds, body.forest .waves, body.forest .petals { display: none; }
+         body.forest .leaves { display: block; }
+
+         /* Cherry Blossom Theme */
+         body.cherry-blossom { background: linear-gradient(to top, #fdf2f8, #fce7f3); color: #be185d; }
+         body.cherry-blossom .theme-toggle { background: transparent; }
+         body.cherry-blossom .sun, body.cherry-blossom .moon, body.cherry-blossom .bubble-icon, body.cherry-blossom .leaf-icon { display: none; }
+         body.cherry-blossom .petal-icon { display: block; }
+         body.cherry-blossom .header h1 { color: #be185d; }
+         body.cherry-blossom .header p { color: #db2777; }
+         body.cherry-blossom .date-display, body.cherry-blossom .add-habit input, body.cherry-blossom .habit-item, body.cherry-blossom .modal { background: rgba(252, 231, 243, 0.8); border: 1px solid #db2777; color: #be185d; }
+         body.cherry-blossom .progress-bar { background: #f3e8ff; }
+         body.cherry-blossom .progress-fill { background: linear-gradient(90deg, #ec4899, #db2777); }
+         body.cherry-blossom .habit-item.completed { background: rgba(236, 72, 153, 0.2); border-color: #ec4899; }
+         body.cherry-blossom .footer-info { background: rgba(252, 231, 243, 0.6); color: #db2777; border: 1px solid rgba(219, 39, 119, 0.5); }
+         body.cherry-blossom .date-info { background: rgba(252, 231, 243, 0.8); color: #be185d; border: 1px solid rgba(219, 39, 119, 0.3); }
+         body.cherry-blossom .add-habit { background: rgba(252, 231, 243, 0.4); border: 1px solid rgba(219, 39, 119, 0.2); }
+         body.cherry-blossom .add-habit input:focus { border-color: #ec4899; }
+         body.cherry-blossom .streak-counter { background: linear-gradient(135deg, #ec4899, #db2777); color: white; box-shadow: 0 2px 8px rgba(236, 72, 153, 0.4); }
+         body.cherry-blossom .habit-templates { background: rgba(252, 231, 243, 0.3); border: 1px solid rgba(219, 39, 119, 0.2); }
+         body.cherry-blossom .template-btn { color: #db2777; border-color: #ec4899; }
+         body.cherry-blossom .template-btn:hover { background: rgba(236, 72, 153, 0.1); border-color: #db2777; }
+         body.cherry-blossom .secondary-reset-btn { color: #f472b6; border-color: #ec4899; }
+         body.cherry-blossom .secondary-reset-btn:hover { background: rgba(236, 72, 153, 0.1); border-color: #db2777; color: #db2777; }
+         body.cherry-blossom .secondary-delete-btn { color: #dc2626; border-color: #fca5a5; }
+         body.cherry-blossom .secondary-delete-btn:hover { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
+         body.cherry-blossom .add-btn { background: linear-gradient(135deg, #ec4899, #db2777); box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4); }
+         body.cherry-blossom .add-btn:hover { box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6); }
+         body.cherry-blossom .stars, body.cherry-blossom .clouds, body.cherry-blossom .waves, body.cherry-blossom .leaves { display: none; }
+         body.cherry-blossom .petals { display: block; }
+         
+         /* Theme Preview Styles */
+         .theme-preview {
+         border-radius: 50%;
+         position: relative;
+         overflow: hidden;
          }
-         body.dark .secondary-reset-btn:hover {
-         background: #1f2937;
-         border-color: #6b7280;
-         color: #d1d5db;
+         .starry-night-preview {
+         background: linear-gradient(135deg, #0f0f0f, #1a1a2e);
          }
-         body.dark .secondary-delete-btn {
-         color: #f87171;
-         border-color: #7f1d1d;
+         .starry-night-preview::after {
+         content: '✨';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
          }
-         body.dark .secondary-delete-btn:hover {
-         background: #1f1917;
-         border-color: #dc2626;
-         color: #fca5a5;
+         .cloudy-day-preview {
+         background: linear-gradient(135deg, #87ceeb, #fdfdfd);
          }
-         body.dark .clouds { display: none; }
-         body.dark .stars { display: block; }
+         .cloudy-day-preview::after {
+         content: '☀️';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
+         }
+         .ocean-preview {
+         background: linear-gradient(135deg, #1e3a8a, #0c4a6e);
+         }
+         .ocean-preview::after {
+         content: '🌊';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
+         }
+         .forest-preview {
+         background: linear-gradient(135deg, #064e3b, #166534);
+         }
+         .forest-preview::after {
+         content: '🌲';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
+         }
+         .cherry-blossom-preview {
+         background: linear-gradient(135deg, #fdf2f8, #fce7f3);
+         }
+         .cherry-blossom-preview::after {
+         content: '🌸';
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         font-size: 16px;
+         }
+         .theme-name {
+         font-size: 0.8rem;
+         font-weight: 500;
+         text-align: center;
+         opacity: 0.8;
+         }
+         
+         /* Theme-specific dropdown styling */
+         body.starry-night .theme-dropdown-menu { background: rgba(26, 26, 26, 0.95); border: 1px solid rgba(51, 51, 51, 0.3); }
+         body.starry-night .theme-dropdown-option { color: #d1d5db; }
+         body.starry-night .theme-dropdown-option:hover { background: rgba(51, 51, 51, 0.3); }
+         body.starry-night .dropdown-arrow { color: #d1d5db; }
+         
+         body.cloudy-day .theme-dropdown-menu { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(204, 204, 204, 0.3); }
+         body.cloudy-day .theme-dropdown-option { color: #4b5563; }
+         body.cloudy-day .theme-dropdown-option:hover { background: rgba(249, 250, 251, 0.8); }
+         body.cloudy-day .dropdown-arrow { color: #4b5563; }
+         
+         body.ocean .theme-dropdown-menu { background: rgba(20, 83, 109, 0.95); border: 1px solid rgba(8, 145, 178, 0.3); }
+         body.ocean .theme-dropdown-option { color: #a5f3fc; }
+         body.ocean .theme-dropdown-option:hover { background: rgba(8, 145, 178, 0.3); }
+         body.ocean .dropdown-arrow { color: #a5f3fc; }
+         
+         body.forest .theme-dropdown-menu { background: rgba(20, 83, 45, 0.95); border: 1px solid rgba(22, 163, 74, 0.3); }
+         body.forest .theme-dropdown-option { color: #bbf7d0; }
+         body.forest .theme-dropdown-option:hover { background: rgba(22, 163, 74, 0.3); }
+         body.forest .dropdown-arrow { color: #bbf7d0; }
+         
+         body.cherry-blossom .theme-dropdown-menu { background: rgba(252, 231, 243, 0.95); border: 1px solid rgba(219, 39, 119, 0.3); }
+         body.cherry-blossom .theme-dropdown-option { color: #db2777; }
+         body.cherry-blossom .theme-dropdown-option:hover { background: rgba(219, 39, 119, 0.2); }
+         body.cherry-blossom .dropdown-arrow { color: #db2777; }
          /* Components reused */
          .date-display { border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 30px; }
          .date-display h2 { font-size: 1.2rem; font-weight: 600; }
@@ -288,18 +727,21 @@
          }
          .add-btn { 
          padding: 12px 20px; 
-         background: #60a5fa; 
          color: white; 
          border: none; 
          border-radius: 8px; 
          font-weight: 600; 
          cursor: pointer; 
-         transition: background-color 0.2s;
+         transition: all 0.3s ease;
          display: flex;
          align-items: center;
          gap: 8px;
+         position: relative;
+         overflow: hidden;
          }
-         .add-btn:hover { background: #3b82f6; }
+         .add-btn:hover { 
+         transform: translateY(-2px);
+         }
          .add-btn::before {
          content: '';
          width: 14px;
@@ -308,10 +750,51 @@
            linear-gradient(white, white) center/2px 14px no-repeat,
            linear-gradient(white, white) center/14px 2px no-repeat;
          }
+         
+         /* Habit Templates */
+         .habit-templates {
+         display: flex;
+         flex-wrap: wrap;
+         gap: 8px;
+         align-items: center;
+         margin-bottom: 30px;
+         padding: 16px 20px;
+         border-radius: 12px;
+         transition: all 0.3s ease;
+         }
+         .templates-label {
+         font-size: 0.85rem;
+         font-weight: 600;
+         opacity: 0.7;
+         margin-right: 8px;
+         }
+         .template-btn {
+         padding: 6px 12px;
+         border: 1px solid;
+         border-radius: 16px;
+         font-size: 0.8rem;
+         font-weight: 500;
+         cursor: pointer;
+         transition: all 0.2s ease;
+         background: transparent;
+         }
+         .template-btn:hover {
+         transform: translateY(-1px);
+         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+         }
          .progress-section { margin-bottom: 30px; }
          .progress-bar { width: 100%; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
          .progress-fill { height: 100%; transition: width 0.3s ease; width: 0%; }
-         .progress-text { text-align: center; font-size: 0.9rem; margin-bottom: 12px; }
+         .progress-text { text-align: center; font-size: 0.9rem; margin-bottom: 8px; }
+         .streak-counter { 
+         font-size: 0.85rem; 
+         font-weight: 600; 
+         padding: 6px 12px;
+         border-radius: 20px;
+         transition: all 0.3s ease;
+         white-space: nowrap;
+         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+         }
          .action-buttons { display: flex; gap: 12px; }
          .reset-btn, .delete-all-btn { 
          flex: 1;
@@ -488,33 +971,166 @@
          .modal-btn.confirm:hover { background: #dc2626; }
          .modal-btn.ok { background: #60a5fa; color: white; }
          .modal-btn.ok:hover { background: #3b82f6; }
+         
+         /* Completion Animation */
+         .completion-overlay {
+         position: fixed;
+         top: 0; left: 0; right: 0; bottom: 0;
+         background: rgba(0, 0, 0, 0.8);
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         z-index: 2000;
+         opacity: 0;
+         visibility: hidden;
+         transition: all 0.5s ease;
+         }
+         .completion-overlay.show {
+         opacity: 1;
+         visibility: visible;
+         }
+         .completion-content {
+         text-align: center;
+         background: white;
+         padding: 40px;
+         border-radius: 20px;
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+         transform: scale(0.8);
+         transition: transform 0.5s ease;
+         z-index: 2001;
+         }
+         .completion-overlay.show .completion-content {
+         transform: scale(1);
+         }
+         .completion-icon {
+         font-size: 4rem;
+         margin-bottom: 20px;
+         animation: bounce 1s infinite alternate;
+         }
+         .completion-content h2 {
+         font-size: 2rem;
+         margin-bottom: 10px;
+         color: #22c55e;
+         }
+         .completion-content p {
+         font-size: 1.1rem;
+         color: #666;
+         margin-bottom: 0;
+         }
+         
+         @keyframes bounce {
+         from { transform: translateY(0); }
+         to { transform: translateY(-10px); }
+         }
+         
+         /* Confetti */
+         .confetti {
+         position: absolute;
+         top: 0; left: 0; right: 0; bottom: 0;
+         pointer-events: none;
+         overflow: hidden;
+         }
+         .confetti-piece {
+         position: absolute;
+         width: 8px;
+         height: 8px;
+         background: #fbbf24;
+         animation: confetti-fall 3s linear infinite;
+         }
+         .confetti-piece:nth-child(2n) { background: #ef4444; }
+         .confetti-piece:nth-child(3n) { background: #22c55e; }
+         .confetti-piece:nth-child(4n) { background: #3b82f6; }
+         .confetti-piece:nth-child(5n) { background: #8b5cf6; }
+         
+         @keyframes confetti-fall {
+         0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+         100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+         }
       </style>
    </head>
-   <body class="dark">
+   <body class="starry-night">
       <!-- Background Elements -->
       <div class="stars" id="stars"></div>
       <div class="clouds" id="clouds"></div>
+      <div class="waves" id="waves"></div>
+      <div class="leaves" id="leaves"></div>
+      <div class="petals" id="petals"></div>
+      
+      <!-- Completion Animation -->
+      <div class="completion-overlay" id="completion-overlay">
+         <div class="completion-content">
+            <div class="completion-icon">🎉</div>
+            <h2>Amazing Work!</h2>
+            <p>You've completed all your habits for today!</p>
+         </div>
+         <div class="confetti" id="confetti"></div>
+      </div>
       
       <!-- Top Left Info -->
       <div class="top-left-info">
          <div class="date-info" id="current-date"></div>
       </div>
       
-      <!-- Theme Toggle -->
-      <button class="theme-toggle" onclick="toggleTheme()" id="theme-toggle">
+            <!-- Top Right Info -->
+      <div class="top-right-info">
+         <div class="streak-counter" id="streak-counter">🌱 Start your streak!</div>
+         <div class="theme-dropdown" id="theme-dropdown">
+            <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle">
+               <div class="current-theme-icon">
          <div class="sun"></div>
          <div class="moon"></div>
+                  <div class="bubble-icon"></div>
+                  <div class="leaf-icon"></div>
+                  <div class="petal-icon"></div>
+               </div>
+               <span class="dropdown-arrow">▼</span>
       </button>
+            <div class="theme-dropdown-menu" id="theme-dropdown-menu">
+               <div class="theme-dropdown-option" data-theme="starry-night">
+                  <div class="theme-preview starry-night-preview"></div>
+                  <span class="theme-name">Starry Night</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="cloudy-day">
+                  <div class="theme-preview cloudy-day-preview"></div>
+                  <span class="theme-name">Cloudy Day</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="ocean">
+                  <div class="theme-preview ocean-preview"></div>
+                  <span class="theme-name">Ocean</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="forest">
+                  <div class="theme-preview forest-preview"></div>
+                  <span class="theme-name">Forest</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="cherry-blossom">
+                  <div class="theme-preview cherry-blossom-preview"></div>
+                  <span class="theme-name">Cherry</span>
+               </div>
+            </div>
+         </div>
+      </div>
       <div class="container">
          <div class="header">
             <h1>Curtain</h1>
             <br>
             <h2>Complete your daily habits</h2>
             <p>Build better habits, one day at a time</p>
+            <div class="daily-quote" id="daily-quote">
+               <span class="quote-text" id="quote-text"></span>
+               <span class="quote-author" id="quote-author"></span>
+            </div>
          </div>
          <div class="add-habit">
             <input type="text" id="habit-input" placeholder="Add a new habit" maxlength="100">
             <button class="add-btn" onclick="addHabit()">Add Habit</button>
+         </div>
+         <div class="habit-templates">
+            <span class="templates-label">Quick add:</span>
+            <button class="template-btn" onclick="addTemplate('💧 Drink 8 glasses of water')">💧 Water</button>
+            <button class="template-btn" onclick="addTemplate('🏃‍♂️ Exercise for 30 minutes')">🏃‍♂️ Exercise</button>
+            <button class="template-btn" onclick="addTemplate('🧘‍♀️ Meditate for 10 minutes')">🧘‍♀️ Meditate</button>
+            <button class="template-btn" onclick="addTemplate('📚 Read for 20 minutes')">📚 Read</button>
+            <button class="template-btn" onclick="addTemplate('🌅 Wake up early')">🌅 Early Rise</button>
          </div>
          <div class="progress-section">
             <div class="progress-bar">
@@ -573,14 +1189,46 @@
          let habits = [];
          let habitToDelete = null;
          let confirmCallback = null;
+         let streakData = { count: 0, lastCompletedDate: null };
+         let currentTheme = 'starry-night';
+         const themes = ['starry-night', 'cloudy-day', 'ocean', 'forest', 'cherry-blossom'];
+         
+         const dailyQuotes = [
+           { text: "Success is the sum of small efforts repeated day in and day out.", author: "Robert Collier" },
+           { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "Aristotle" },
+           { text: "The secret of getting ahead is getting started.", author: "Mark Twain" },
+           { text: "A journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
+           { text: "You don't have to be great to get started, but you have to get started to be great.", author: "Les Brown" },
+           { text: "Small daily improvements over time lead to stunning results.", author: "Robin Sharma" },
+           { text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+           { text: "Progress, not perfection.", author: "Anonymous" },
+           { text: "Every master was once a beginner. Every pro was once an amateur.", author: "Robin Sharma" },
+           { text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+           { text: "The only impossible journey is the one you never begin.", author: "Tony Robbins" },
+           { text: "Your future is created by what you do today, not tomorrow.", author: "Robert Kiyosaki" }
+         ];
          
          function init() {
            displayCurrentDate();
+           displayDailyQuote();
            loadHabits();
+           loadStreakData();
+           loadTheme();
            renderHabits();
            updateProgress();
-           generateStars();
-           generateClouds();
+           updateStreakDisplay();
+           generateBackgroundElements();
+           updateThemeSelector();
+         }
+         
+         function displayDailyQuote() {
+           const today = new Date();
+           const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+           const quoteIndex = dayOfYear % dailyQuotes.length;
+           const quote = dailyQuotes[quoteIndex];
+           
+           document.getElementById('quote-text').textContent = `"${quote.text}"`;
+           document.getElementById('quote-author').textContent = `— ${quote.author}`;
          }
          
          function displayCurrentDate() {
@@ -608,6 +1256,154 @@
            localStorage.setItem('habitTracker', JSON.stringify({ date: today, habits }));
          }
          
+         function loadStreakData() {
+           const saved = localStorage.getItem('habitStreak');
+           if (saved) {
+             streakData = JSON.parse(saved);
+           }
+         }
+         
+         function saveStreakData() {
+           localStorage.setItem('habitStreak', JSON.stringify(streakData));
+         }
+         
+         function updateStreakDisplay() {
+           const streakElement = document.getElementById('streak-counter');
+           if (streakData.count === 0) {
+             streakElement.textContent = '🌱 Start your streak!';
+           } else {
+             streakElement.textContent = `🔥 ${streakData.count}`;
+           }
+         }
+         
+         function checkStreakUpdate() {
+           const today = new Date().toDateString();
+           const total = habits.length;
+           const completed = habits.filter(h => h.completed).length;
+           
+           if (total > 0 && completed === total) {
+             // All habits completed
+             if (streakData.lastCompletedDate !== today) {
+               const yesterday = new Date();
+               yesterday.setDate(yesterday.getDate() - 1);
+               const yesterdayStr = yesterday.toDateString();
+               
+               if (streakData.lastCompletedDate === yesterdayStr) {
+                 // Consecutive day
+                 streakData.count++;
+               } else {
+                 // New streak or broken streak
+                 streakData.count = 1;
+               }
+               streakData.lastCompletedDate = today;
+               saveStreakData();
+               updateStreakDisplay();
+               
+               // Show completion animation
+               showCompletionAnimation();
+             }
+           } else if (total > 0) {
+             // Not all habits completed - check if streak should be broken
+             const yesterday = new Date();
+             yesterday.setDate(yesterday.getDate() - 1);
+             const yesterdayStr = yesterday.toDateString();
+             
+             if (streakData.lastCompletedDate === yesterdayStr && streakData.count > 0) {
+               // Streak is still valid for today
+               return;
+             }
+           }
+         }
+         
+         function showCompletionAnimation() {
+           const overlay = document.getElementById('completion-overlay');
+           const confetti = document.getElementById('confetti');
+           const completionContent = overlay.querySelector('.completion-content');
+           
+           // Update completion message and icon based on theme
+           const icon = completionContent.querySelector('.completion-icon');
+           const title = completionContent.querySelector('h2');
+           const message = completionContent.querySelector('p');
+           
+           switch(currentTheme) {
+             case 'starry-night':
+               icon.textContent = '✨';
+               title.textContent = 'Stellar Achievement!';
+               message.textContent = 'You\'ve completed all your habits like a shining star!';
+               break;
+             case 'cloudy-day':
+               icon.textContent = '🌟';
+               title.textContent = 'Bright Success!';
+               message.textContent = 'You\'ve completed all your habits for today!';
+               break;
+             case 'ocean':
+               icon.textContent = '🌊';
+               title.textContent = 'Wave of Success!';
+               message.textContent = 'You\'ve surfed through all your habits today!';
+               break;
+             case 'forest':
+               icon.textContent = '🌳';
+               title.textContent = 'Growing Strong!';
+               message.textContent = 'Your habits are flourishing like a mighty forest!';
+               break;
+             case 'cherry-blossom':
+               icon.textContent = '🌸';
+               title.textContent = 'Blooming Beautiful!';
+               message.textContent = 'Your habits have blossomed perfectly today!';
+               break;
+           }
+           
+           // Generate theme-specific confetti
+           confetti.innerHTML = '';
+           generateThemeConfetti(confetti);
+           
+           // Show overlay
+           overlay.classList.add('show');
+           
+           // Auto-hide after 4 seconds
+           setTimeout(() => {
+             overlay.classList.remove('show');
+           }, 4000);
+         }
+         
+         function generateThemeConfetti(container) {
+           const count = 50;
+           for (let i = 0; i < count; i++) {
+             const piece = document.createElement('div');
+             piece.style.left = Math.random() * 100 + '%';
+             piece.style.animationDelay = Math.random() * 2 + 's';
+             piece.style.animationDuration = (2 + Math.random() * 2) + 's';
+             
+             switch(currentTheme) {
+               case 'starry-night':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#38bdf8', '#0ea5e9', '#f59e0b', '#8b5cf6'][Math.floor(Math.random() * 4)];
+                 break;
+               case 'cloudy-day':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#fbbf24', '#f59e0b', '#ef4444', '#22c55e', '#3b82f6'][Math.floor(Math.random() * 5)];
+                 break;
+               case 'ocean':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#06b6d4', '#0891b2', '#0e7490', '#ecfeff'][Math.floor(Math.random() * 4)];
+                 piece.style.borderRadius = '50%';
+                 break;
+               case 'forest':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#22c55e', '#16a34a', '#15803d', '#dcfce7'][Math.floor(Math.random() * 4)];
+                 piece.style.borderRadius = '0 100% 0 100%';
+                 break;
+               case 'cherry-blossom':
+                 piece.className = 'confetti-piece';
+                 piece.style.background = ['#ec4899', '#db2777', '#be185d', '#fdf2f8'][Math.floor(Math.random() * 4)];
+                 piece.style.borderRadius = '50% 0 50% 0';
+                 break;
+             }
+             
+             container.appendChild(piece);
+           }
+         }
+         
          function addHabit() {
            const input = document.getElementById('habit-input');
            const habitText = input.value.trim();
@@ -615,6 +1411,15 @@
            if (habits.some(h => h.text.toLowerCase() === habitText.toLowerCase())) return showAlert('This habit already exists!');
            habits.push({ id: Date.now(), text: habitText, completed: false });
            input.value = '';
+           saveHabits(); renderHabits(); updateProgress();
+         }
+         
+         function addTemplate(templateText) {
+           if (habits.some(h => h.text.toLowerCase() === templateText.toLowerCase())) {
+             showAlert('This habit already exists!');
+             return;
+           }
+           habits.push({ id: Date.now(), text: templateText, completed: false });
            saveHabits(); renderHabits(); updateProgress();
          }
          
@@ -689,6 +1494,7 @@
            const percent = total > 0 ? (done / total) * 100 : 0;
            document.getElementById('progress-fill').style.width = `${percent}%`;
            document.getElementById('progress-text').textContent = `${done} of ${total} habits completed`;
+           checkStreakUpdate();
          }
          
          function resetCompleted() {
@@ -706,20 +1512,93 @@
            });
          }
          
-         // Theme toggle
-         function toggleTheme() {
+         // Theme Management
+         function loadTheme() {
+           const savedTheme = localStorage.getItem('selectedTheme');
+           if (savedTheme && themes.includes(savedTheme)) {
+             currentTheme = savedTheme;
+           }
+           applyTheme(currentTheme);
+         }
+         
+         function saveTheme() {
+           localStorage.setItem('selectedTheme', currentTheme);
+         }
+         
+         function applyTheme(theme) {
            const body = document.body;
-           
-           if (body.classList.contains('dark')) {
-             body.classList.remove('dark'); 
-             body.classList.add('light');
-           } else {
-             body.classList.remove('light'); 
-             body.classList.add('dark');
+           // Remove all theme classes
+           themes.forEach(t => body.classList.remove(t));
+           // Add current theme class
+           body.classList.add(theme);
+           currentTheme = theme;
+           saveTheme();
+           updateThemeSelector();
+         }
+         
+                  function toggleTheme() {
+           const currentIndex = themes.indexOf(currentTheme);
+           const nextIndex = (currentIndex + 1) % themes.length;
+           applyTheme(themes[nextIndex]);
+           generateBackgroundElements();
+         }
+         
+         function selectTheme(theme) {
+           if (themes.includes(theme)) {
+             applyTheme(theme);
+             generateBackgroundElements();
            }
          }
          
-         // Generate stars
+         function toggleThemeDropdown() {
+           const dropdown = document.getElementById('theme-dropdown');
+           dropdown.classList.toggle('open');
+         }
+         
+         function updateThemeSelector() {
+           const options = document.querySelectorAll('.theme-dropdown-option');
+           options.forEach(option => {
+             const theme = option.dataset.theme;
+             if (theme === currentTheme) {
+               option.classList.add('active');
+           } else {
+               option.classList.remove('active');
+             }
+           });
+         }
+         
+         // Generate Background Elements
+         function generateBackgroundElements() {
+           clearBackgroundElements();
+           
+           switch(currentTheme) {
+             case 'starry-night':
+               generateStars();
+               break;
+             case 'cloudy-day':
+               generateClouds();
+               break;
+             case 'ocean':
+               generateWaves();
+               generateBubbles();
+               break;
+             case 'forest':
+               generateLeaves();
+               break;
+             case 'cherry-blossom':
+               generatePetals();
+               break;
+           }
+         }
+         
+         function clearBackgroundElements() {
+           document.getElementById('stars').innerHTML = '';
+           document.getElementById('clouds').innerHTML = '';
+           document.getElementById('waves').innerHTML = '';
+           document.getElementById('leaves').innerHTML = '';
+           document.getElementById('petals').innerHTML = '';
+         }
+         
          function generateStars() {
            const starsContainer = document.getElementById('stars');
            for (let i = 0; i < 100; i++) {
@@ -732,7 +1611,6 @@
            }
          }
          
-         // Generate clouds
          function generateClouds() {
            const cloudsContainer = document.getElementById('clouds');
            for (let i = 0; i < 5; i++) {
@@ -747,11 +1625,84 @@
            }
          }
          
+         function generateWaves() {
+           const wavesContainer = document.getElementById('waves');
+           for (let i = 0; i < 3; i++) {
+             const wave = document.createElement('div');
+             wave.className = 'wave';
+             wave.style.animationDelay = `-${i * 2}s`;
+             wavesContainer.appendChild(wave);
+           }
+         }
+         
+         function generateBubbles() {
+           const wavesContainer = document.getElementById('waves');
+           for (let i = 0; i < 15; i++) {
+             const bubble = document.createElement('div');
+             bubble.className = 'bubble';
+             const size = 4 + Math.random() * 12;
+             bubble.style.width = size + 'px';
+             bubble.style.height = size + 'px';
+             bubble.style.left = Math.random() * 100 + '%';
+             bubble.style.bottom = '-20px'; // Start from bottom
+             bubble.style.animationDelay = Math.random() * 6 + 's';
+             bubble.style.animationDuration = (4 + Math.random() * 4) + 's';
+             wavesContainer.appendChild(bubble);
+           }
+         }
+         
+         function generateLeaves() {
+           const leavesContainer = document.getElementById('leaves');
+           for (let i = 0; i < 20; i++) {
+             const leaf = document.createElement('div');
+             leaf.className = 'leaf';
+             leaf.style.left = Math.random() * 100 + '%';
+             leaf.style.top = '-50px'; // Start from above visible area
+             leaf.style.animationDelay = Math.random() * 8 + 's';
+             leaf.style.animationDuration = (6 + Math.random() * 4) + 's';
+             leavesContainer.appendChild(leaf);
+           }
+         }
+         
+         function generatePetals() {
+           const petalsContainer = document.getElementById('petals');
+           for (let i = 0; i < 25; i++) {
+             const petal = document.createElement('div');
+             petal.className = 'petal';
+             petal.style.left = Math.random() * 100 + '%';
+             petal.style.top = '-50px'; // Start from above visible area
+             petal.style.animationDelay = Math.random() * 10 + 's';
+             petal.style.animationDuration = (8 + Math.random() * 4) + 's';
+             petalsContainer.appendChild(petal);
+           }
+         }
+         
          document.getElementById('habit-input').addEventListener('keypress', e => { if (e.key === 'Enter') addHabit(); });
          document.addEventListener('DOMContentLoaded', init);
          document.getElementById('delete-modal').addEventListener('click', e => { if (e.target === e.currentTarget) hideDeleteModal(); });
          document.getElementById('alert-modal').addEventListener('click', e => { if (e.target === e.currentTarget) hideAlertModal(); });
          document.getElementById('confirm-modal').addEventListener('click', e => { if (e.target === e.currentTarget) hideConfirmModal(false); });
+         document.getElementById('completion-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) document.getElementById('completion-overlay').classList.remove('show'); });
+         
+         // Theme dropdown event listeners
+         document.addEventListener('DOMContentLoaded', () => {
+           const themeOptions = document.querySelectorAll('.theme-dropdown-option');
+           themeOptions.forEach(option => {
+             option.addEventListener('click', () => {
+               const theme = option.dataset.theme;
+               selectTheme(theme);
+               toggleThemeDropdown(); // Close dropdown after selection
+             });
+           });
+           
+           // Close dropdown when clicking outside
+           document.addEventListener('click', (e) => {
+             const dropdown = document.getElementById('theme-dropdown');
+             if (!dropdown.contains(e.target)) {
+               dropdown.classList.remove('open');
+             }
+           });
+         });
       </script>
    </body>
 </html>
