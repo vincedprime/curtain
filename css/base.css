@@ -10,6 +10,7 @@
   --theme-text: #ffffff;
   --theme-textSecondary: #a3a3a3;
   --theme-accent: #f97316;
+  --theme-streak-background: rgba(249, 115, 22, 0.1);
   --theme-success: #22c55e;
   --theme-danger: #dc2626;
   --theme-warning: #f59e0b;
@@ -1025,6 +1026,16 @@ body {
   flex: 1; 
   font-size: 1rem;
   color: var(--theme-text);
+}
+
+.habit-streak {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgb(255, 155, 61);
+  margin-left: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--theme-streak-background);
 }
 
 .habit-item.completed .habit-text { 

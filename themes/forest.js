@@ -13,6 +13,7 @@ window.ThemePlugins['forest'] = {
     text: '#dcfce7',
     textSecondary: '#bbf7d0',
     accent: '#15803d',
+    'streak-background': 'rgba(249, 115, 22, 0.1)',
     success: '#22c55e',
     danger: '#dc2626',
     warning: '#f59e0b',

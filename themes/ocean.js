@@ -13,6 +13,7 @@ window.ThemePlugins['ocean'] = {
     text: '#ecfeff',
     textSecondary: '#a5f3fc',
     accent: '#0e7490',
+    'streak-background': 'rgba(249, 115, 22, 0.1)',
     success: '#22c55e',
     danger: '#dc2626',
     warning: '#f59e0b',

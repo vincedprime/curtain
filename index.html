@@ -79,7 +79,6 @@
             <div class="date-info" id="current-date-mobile"></div>
          </div>
          <div class="mobile-header-center">
-            <div class="streak-counter" id="streak-counter-mobile">🌱 Start your streak!</div>
          </div>
          <div class="mobile-header-right">
             <div class="theme-dropdown" id="theme-dropdown-mobile">
@@ -135,7 +134,6 @@
       </div>
       
       <div class="top-right-info">
-         <div class="streak-counter" id="streak-counter">🌱 Start your streak!</div>
          <div class="theme-dropdown" id="theme-dropdown">
             <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle">
                <div class="current-theme-icon">
@@ -257,7 +255,6 @@
          let habits = [];
          let habitToDelete = null;
          let confirmCallback = null;
-         let streakData = { count: 0, lastCompletedDate: null };
          let themeEngine = null;
          const themes = ['starry-night', 'cloudy-day', 'ocean', 'forest', 'cherry-blossom', 'snow', 'rain'];
          
@@ -284,10 +281,8 @@
            displayCurrentDate();
            displayDailyQuote();
            loadHabits();
-           loadStreakData();
            renderHabits();
            updateProgress();
-           updateStreakDisplay();
            setupEventListeners();
          }
          
@@ -324,11 +319,33 @@
            const savedData = localStorage.getItem('habitTracker');
            if (savedData) {
              const data = JSON.parse(savedData);
+             let loadedHabits = data.habits || [];
+         
+             // Data migration for per-habit streaks
+             loadedHabits = loadedHabits.map(habit => ({
+               ...habit,
+               streak: habit.streak || 0,
+               lastCompletedDate: habit.lastCompletedDate || null
+             }));
+         
              if (data.date !== today) {
-               habits = data.habits.map(habit => ({ ...habit, completed: false }));
+               const yesterday = new Date();
+               yesterday.setDate(yesterday.getDate() - 1);
+               const yesterdayStr = yesterday.toDateString();
+         
+               loadedHabits.forEach(habit => {
+                 // Reset streak if the last completion was not yesterday
+                 if (habit.lastCompletedDate !== yesterdayStr) {
+                   habit.streak = 0;
+                 }
+                 // Reset completion status for the new day
+                 habit.completed = false;
+               });
+         
+               habits = loadedHabits;
                saveHabits();
              } else {
-               habits = data.habits || [];
+               habits = loadedHabits;
              }
            }
          }
@@ -336,72 +353,6 @@
          function saveHabits() {
            const today = new Date().toDateString();
            localStorage.setItem('habitTracker', JSON.stringify({ date: today, habits }));
-         }
-         
-         function loadStreakData() {
-           const saved = localStorage.getItem('habitStreak');
-           if (saved) {
-             streakData = JSON.parse(saved);
-           }
-         }
-         
-         function saveStreakData() {
-           localStorage.setItem('habitStreak', JSON.stringify(streakData));
-         }
-         
-         function updateStreakDisplay() {
-           const streakText = streakData.count === 0 ? '🌱 Start your streak!' : `🔥 ${streakData.count}`;
-           
-           // Desktop streak counter
-           const desktopStreak = document.getElementById('streak-counter');
-           if (desktopStreak) {
-             desktopStreak.textContent = streakText;
-           }
-           
-           // Mobile streak counter
-           const mobileStreak = document.getElementById('streak-counter-mobile');
-           if (mobileStreak) {
-             mobileStreak.textContent = streakText;
-           }
-         }
-         
-         function checkStreakUpdate() {
-           const today = new Date().toDateString();
-           const total = habits.length;
-           const completed = habits.filter(h => h.completed).length;
-           
-           if (total > 0 && completed === total) {
-             // All habits completed
-             if (streakData.lastCompletedDate !== today) {
-               const yesterday = new Date();
-               yesterday.setDate(yesterday.getDate() - 1);
-               const yesterdayStr = yesterday.toDateString();
-               
-               if (streakData.lastCompletedDate === yesterdayStr) {
-                 // Consecutive day
-                 streakData.count++;
-               } else {
-                 // New streak or broken streak
-                 streakData.count = 1;
-               }
-               streakData.lastCompletedDate = today;
-               saveStreakData();
-               updateStreakDisplay();
-               
-               // Show completion animation
-               showCompletionAnimation();
-             }
-           } else if (total > 0) {
-             // Not all habits completed - check if streak should be broken
-             const yesterday = new Date();
-             yesterday.setDate(yesterday.getDate() - 1);
-             const yesterdayStr = yesterday.toDateString();
-             
-             if (streakData.lastCompletedDate === yesterdayStr && streakData.count > 0) {
-               // Streak is still valid for today
-               return;
-             }
-           }
          }
          
          function showCompletionAnimation() {
@@ -439,7 +390,13 @@
            const habitText = input.value.trim();
            if (!habitText) return showAlert('Please enter a habit!');
            if (habits.some(h => h.text.toLowerCase() === habitText.toLowerCase())) return showAlert('This habit already exists!');
-           habits.push({ id: Date.now(), text: habitText, completed: false });
+           habits.push({ 
+             id: Date.now(), 
+             text: habitText, 
+             completed: false, 
+             streak: 0, 
+             lastCompletedDate: null 
+           });
            input.value = '';
            saveHabits(); 
            renderHabits(); 
@@ -447,9 +404,41 @@
          }
          
          function toggleHabit(id) {
-           habits = habits.map(h => h.id === id ? { ...h, completed: !h.completed } : h);
-           saveHabits(); 
-           renderHabits(); 
+           const habit = habits.find(h => h.id === id);
+           if (!habit) return;
+         
+           const today = new Date().toDateString();
+           const yesterday = new Date();
+           yesterday.setDate(yesterday.getDate() - 1);
+           const yesterdayStr = yesterday.toDateString();
+         
+           if (!habit.completed) {
+             // Marking as complete
+             habit.completed = true;
+             if (habit.lastCompletedDate === yesterdayStr) {
+               habit.streak++;
+             } else if (habit.lastCompletedDate !== today) {
+               habit.streak = 1;
+             }
+             habit.lastCompletedDate = today;
+           } else {
+             // Marking as incomplete
+             habit.completed = false;
+             // If the habit was completed today, revert streak
+             if (habit.lastCompletedDate === today) {
+               if (habit.streak > 1) {
+                 habit.streak--;
+                 // lastCompletedDate should revert to yesterday
+                 habit.lastCompletedDate = yesterdayStr;
+               } else {
+                 habit.streak = 0;
+                 habit.lastCompletedDate = null;
+               }
+             }
+           }
+         
+           saveHabits();
+           renderHabits();
            updateProgress();
          }
          
@@ -523,6 +512,7 @@
              <div class="habit-item ${habit.completed ? 'completed' : ''}">
                <div class="habit-checkbox ${habit.completed ? 'checked' : ''}" onclick="toggleHabit(${habit.id})"></div>
                <span class="habit-text">${habit.text}</span>
+               ${habit.streak > 0 ? `<span class="habit-streak">🔥 ${habit.streak}</span>` : ''}
                <div class="delete-btn-container">
                  <button class="delete-btn" onclick="deleteHabit(${habit.id})"></button>
                </div>
@@ -536,7 +526,6 @@
            const percent = total > 0 ? (done / total) * 100 : 0;
            document.getElementById('progress-fill').style.width = `${percent}%`;
            document.getElementById('progress-text').textContent = `${done} of ${total} habits completed`;
-           checkStreakUpdate();
          }
          
          function resetCompleted() {

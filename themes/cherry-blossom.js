@@ -13,6 +13,7 @@ window.ThemePlugins['cherry-blossom'] = {
     text: '#be185d',
     textSecondary: '#db2777',
     accent: '#be185d',
+    'streak-background': 'rgba(249, 115, 22, 0.1)',
     success: '#22c55e',
     danger: '#dc2626',
     warning: '#f59e0b',
