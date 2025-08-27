@@ -76,7 +76,11 @@ class ThemeEngine {
       this.currentTheme = themeName;
       this.saveTheme();
       this.updateThemeSelector();
-      this.generateBackgroundElements();
+      
+      // Defer background generation to avoid blocking the main thread
+      setTimeout(() => {
+        this.generateBackgroundElements();
+      }, 0);
     } catch (error) {
       console.error('Failed to switch theme:', error);
     }
@@ -86,21 +90,24 @@ class ThemeEngine {
    * Apply theme to the DOM
    */
   applyTheme(theme, themeName) {
-    const body = document.body;
-    
-    // Remove all existing theme classes
-    Object.keys(this.themeRegistry).forEach(name => {
-      body.classList.remove(name);
+    // Batch DOM operations to prevent multiple reflows
+    requestAnimationFrame(() => {
+      const body = document.body;
+      
+      // Remove all existing theme classes at once
+      const themeNames = Object.keys(this.themeRegistry).join('|');
+      const themeRegex = new RegExp(`\\b(${themeNames})\\b`, 'g');
+      body.className = body.className.replace(themeRegex, '').trim();
+      
+      // Add current theme class
+      body.classList.add(themeName);
+      
+      // Apply CSS custom properties
+      this.applyCSSVariables(theme);
+      
+      // Apply theme-specific styles
+      this.applyThemeStyles(theme);
     });
-    
-    // Add current theme class
-    body.classList.add(themeName);
-    
-    // Apply CSS custom properties
-    this.applyCSSVariables(theme);
-    
-    // Apply theme-specific styles
-    this.applyThemeStyles(theme);
   }
 
   /**
@@ -242,11 +249,13 @@ class ThemeEngine {
    */
   clearBackgroundElements() {
     const containers = ['stars', 'clouds', 'waves', 'leaves', 'petals', 'snowflakes', 'raindrops'];
-    containers.forEach(id => {
-      const container = document.getElementById(id);
-      if (container) {
-        container.innerHTML = '';
-      }
+    requestAnimationFrame(() => {
+      containers.forEach(id => {
+        const container = document.getElementById(id);
+        if (container && container.children.length > 0) {
+          container.innerHTML = '';
+        }
+      });
     });
   }
 
