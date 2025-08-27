@@ -448,6 +448,15 @@ body {
   font-size: 0.9rem;
   font-weight: 500;
   transition: all 0.5s ease;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--theme-border-color);
+}
+
+.date-info:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: var(--theme-shadow-secondary);
 }
 
 /* Theme Icons */
