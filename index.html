@@ -73,62 +73,9 @@
          <div class="confetti" id="confetti"></div>
       </div>
       
-      <!-- Mobile Header (shown only on mobile) -->
-      <div class="mobile-header">
-         <div class="mobile-header-left">
-            <div class="date-info" id="current-date-mobile"></div>
-         </div>
-         <div class="mobile-header-center">
-         </div>
-         <div class="mobile-header-right">
-            <div class="theme-dropdown" id="theme-dropdown-mobile">
-               <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle-mobile">
-                  <div class="current-theme-icon">
-                     <div class="sun"></div>
-                     <div class="moon"></div>
-                     <div class="bubble-icon"></div>
-                     <div class="leaf-icon"></div>
-                     <div class="petal-icon"></div>
-                     <div class="snowflake-icon"></div>
-                     <div class="raindrop-icon"></div>
-                  </div>
-                  <span class="dropdown-arrow">▼</span>
-               </button>
-               <div class="theme-dropdown-menu" id="theme-dropdown-menu-mobile">
-                  <div class="theme-dropdown-option" data-theme="starry-night">
-                     <div class="theme-preview starry-night-preview"></div>
-                     <span class="theme-name">Starry Night</span>
-                  </div>
-                  <div class="theme-dropdown-option" data-theme="cloudy-day">
-                     <div class="theme-preview cloudy-day-preview"></div>
-                     <span class="theme-name">Cloudy Day</span>
-                  </div>
-                  <div class="theme-dropdown-option" data-theme="ocean">
-                     <div class="theme-preview ocean-preview"></div>
-                     <span class="theme-name">Ocean</span>
-                  </div>
-                  <div class="theme-dropdown-option" data-theme="forest">
-                     <div class="theme-preview forest-preview"></div>
-                     <span class="theme-name">Forest</span>
-                  </div>
-                  <div class="theme-dropdown-option" data-theme="cherry-blossom">
-                     <div class="theme-preview cherry-blossom-preview"></div>
-                     <span class="theme-name">Cherry</span>
-                  </div>
-                  <div class="theme-dropdown-option" data-theme="snow">
-                     <div class="theme-preview snow-preview"></div>
-                     <span class="theme-name">Snow</span>
-                  </div>
-                  <div class="theme-dropdown-option" data-theme="rain">
-                     <div class="theme-preview rain-preview"></div>
-                     <span class="theme-name">Rain</span>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </div>
+      <!-- Mobile header removed - using desktop layout for all screen sizes -->
 
-      <!-- Desktop Header (hidden on mobile) -->
+      <!-- Header Elements (responsive for all screen sizes) -->
       <div class="top-left-info">
          <div class="date-info" id="current-date"></div>
       </div>
@@ -182,10 +129,8 @@
       
       <div class="container">
          <div class="header">
-            <h1>Curtain</h1>
-            <br>
+            <h1>Curtain</h1>            
             <h2>Complete your daily habits</h2>
-            <p>Build better habits, one day at a time</p>
             <div class="daily-quote" id="daily-quote">
                <span class="quote-text" id="quote-text"></span>
                <span class="quote-author" id="quote-author"></span>
@@ -307,10 +252,16 @@
              desktopDate.textContent = today.toLocaleDateString('en-US', options);
            }
            
-           // Mobile date (shorter format)
-           const mobileDate = document.getElementById('current-date-mobile');
-           if (mobileDate) {
-             mobileDate.textContent = today.toLocaleDateString('en-US', mobileOptions);
+           // Check if mobile and adjust date format
+           if (window.innerWidth <= 768) {
+             const mobileOptions = { 
+               weekday: 'short', 
+               month: 'short', 
+               day: 'numeric' 
+             };
+             if (desktopDate) {
+               desktopDate.textContent = today.toLocaleDateString('en-US', mobileOptions);
+             }
            }
          }
          
@@ -555,19 +506,10 @@
          }
          
          function toggleThemeDropdown() {
-           // Check if we're on mobile or desktop based on screen width
-           const isMobile = window.innerWidth <= 768;
-           
-           if (isMobile) {
-             const mobileDropdown = document.getElementById('theme-dropdown-mobile');
-             if (mobileDropdown) {
-               mobileDropdown.classList.toggle('open');
-             }
-           } else {
-             const desktopDropdown = document.getElementById('theme-dropdown');
-             if (desktopDropdown) {
-               desktopDropdown.classList.toggle('open');
-             }
+           // Always use desktop dropdown (works on all screen sizes)
+           const dropdown = document.getElementById('theme-dropdown');
+           if (dropdown) {
+             dropdown.classList.toggle('open');
            }
          }
          
@@ -600,26 +542,22 @@
              option.addEventListener('click', () => {
                const theme = option.dataset.theme;
                selectTheme(theme);
-               // Close both desktop and mobile dropdowns
-               const desktopDropdown = document.getElementById('theme-dropdown');
-               const mobileDropdown = document.getElementById('theme-dropdown-mobile');
-               if (desktopDropdown) desktopDropdown.classList.remove('open');
-               if (mobileDropdown) mobileDropdown.classList.remove('open');
+               // Close dropdown
+               const dropdown = document.getElementById('theme-dropdown');
+               if (dropdown) dropdown.classList.remove('open');
              });
            });
            
            // Close dropdown when clicking outside
            document.addEventListener('click', (e) => {
-             const desktopDropdown = document.getElementById('theme-dropdown');
-             const mobileDropdown = document.getElementById('theme-dropdown-mobile');
-             
-             if (desktopDropdown && !desktopDropdown.contains(e.target)) {
-               desktopDropdown.classList.remove('open');
-             }
-             if (mobileDropdown && !mobileDropdown.contains(e.target)) {
-               mobileDropdown.classList.remove('open');
+             const dropdown = document.getElementById('theme-dropdown');
+             if (dropdown && !dropdown.contains(e.target)) {
+               dropdown.classList.remove('open');
              }
            });
+           
+           // Update date format on window resize
+           window.addEventListener('resize', updateDate);
          }
          
          // Initialize the application

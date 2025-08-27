@@ -77,10 +77,10 @@ class ThemeEngine {
       this.saveTheme();
       this.updateThemeSelector();
       
-      // Defer background generation to avoid blocking the main thread
+      // Use a small delay to ensure DOM operations complete
       setTimeout(() => {
         this.generateBackgroundElements();
-      }, 0);
+      }, 10);
     } catch (error) {
       console.error('Failed to switch theme:', error);
     }
@@ -249,13 +249,11 @@ class ThemeEngine {
    */
   clearBackgroundElements() {
     const containers = ['stars', 'clouds', 'waves', 'leaves', 'petals', 'snowflakes', 'raindrops'];
-    requestAnimationFrame(() => {
-      containers.forEach(id => {
-        const container = document.getElementById(id);
-        if (container && container.children.length > 0) {
-          container.innerHTML = '';
-        }
-      });
+    containers.forEach(id => {
+      const container = document.getElementById(id);
+      if (container && container.children.length > 0) {
+        container.innerHTML = '';
+      }
     });
   }
 
