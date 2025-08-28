@@ -227,7 +227,7 @@
            displayDailyQuote();
            loadHabits();
            renderHabits();
-           updateProgress();
+           updateProgress(false);
            setupEventListeners();
            
            // Save initial data to historical records
@@ -514,7 +514,7 @@
            `).join('');
          }
          
-         function updateProgress() {
+         function updateProgress(triggeredByUser = true) {
            const total = habits.length;
            const done = habits.filter(h => h.completed).length;
            const percent = total > 0 ? (done / total) * 100 : 0;
@@ -522,7 +522,7 @@
            document.getElementById('progress-text').textContent = `${done} of ${total} habits completed`;
            
            // Check for completion animation
-           if (total > 0 && done === total) {
+           if (total > 0 && done === total && triggeredByUser) {
              setTimeout(() => {
                showCompletionAnimation();
              }, 500); // Delay to allow for visual feedback
