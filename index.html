@@ -77,7 +77,7 @@
 
       <!-- Header Elements (responsive for all screen sizes) -->
       <div class="top-left-info">
-         <div class="date-info" id="current-date"></div>
+         <div class="date-info" id="current-date" onclick="openCalendar()" title="View Calendar"></div>
       </div>
       
       <div class="top-right-info">
@@ -229,6 +229,11 @@
            renderHabits();
            updateProgress();
            setupEventListeners();
+           
+           // Save initial data to historical records
+           if (habits.length > 0) {
+             saveToHistoricalData();
+           }
          }
          
          function displayDailyQuote() {
@@ -304,6 +309,44 @@
          function saveHabits() {
            const today = new Date().toDateString();
            localStorage.setItem('habitTracker', JSON.stringify({ date: today, habits }));
+           
+           // Also save to historical data for calendar
+           saveToHistoricalData();
+         }
+         
+         function saveToHistoricalData() {
+           const today = new Date().toDateString();
+           
+           // Load existing historical data
+           let historicalData = {};
+           const saved = localStorage.getItem('habitCalendarData');
+           if (saved) {
+             try {
+               historicalData = JSON.parse(saved);
+             } catch (error) {
+               console.error('Error loading historical data:', error);
+             }
+           }
+           
+           // Save current day's data
+           historicalData[today] = {
+             date: today,
+             habits: habits.map(h => ({
+               id: h.id,
+               text: h.text,
+               completed: h.completed,
+               streak: h.streak
+             }))
+           };
+           
+           // Save back to localStorage
+           localStorage.setItem('habitCalendarData', JSON.stringify(historicalData));
+         }
+         
+         function openCalendar() {
+           // Save current data before navigating
+           saveToHistoricalData();
+           window.location.href = 'calendar.html';
          }
          
          function showCompletionAnimation() {
@@ -477,6 +520,13 @@
            const percent = total > 0 ? (done / total) * 100 : 0;
            document.getElementById('progress-fill').style.width = `${percent}%`;
            document.getElementById('progress-text').textContent = `${done} of ${total} habits completed`;
+           
+           // Check for completion animation
+           if (total > 0 && done === total) {
+             setTimeout(() => {
+               showCompletionAnimation();
+             }, 500); // Delay to allow for visual feedback
+           }
          }
          
          function resetCompleted() {
