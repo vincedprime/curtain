@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Curtain - Habit Calendar</title>
+      <link rel="stylesheet" href="css/base.css">
+      <link rel="stylesheet" href="css/calendar.css">
+      <script src="js/theme-registry.js"></script>
+      <script src="js/theme-engine.js"></script>
+      <script src="js/calendar.js"></script>
+      <!-- Theme Plugins -->
+      <script src="themes/starry-night.js"></script>
+      <script src="themes/cloudy-day.js"></script>
+      <script src="themes/ocean.js"></script>
+      <script src="themes/forest.js"></script>
+      <script src="themes/cherry-blossom.js"></script>
+      <script src="themes/snow.js"></script>
+      <script src="themes/rain.js"></script>
+      <style>
+         /* Theme-specific visibility rules - dynamically managed by theme engine */
+         .starry-night .sun, .starry-night .bubble-icon, .starry-night .leaf-icon, .starry-night .petal-icon, .starry-night .snowflake-icon, .starry-night .raindrop-icon { display: none; }
+         .starry-night .moon { display: block; }
+         .starry-night .clouds, .starry-night .waves, .starry-night .leaves, .starry-night .petals, .starry-night .snowflakes, .starry-night .raindrops { display: none; }
+         .starry-night .stars { display: block; }
+         
+         .cloudy-day .moon, .cloudy-day .bubble-icon, .cloudy-day .leaf-icon, .cloudy-day .petal-icon, .cloudy-day .snowflake-icon, .cloudy-day .raindrop-icon { display: none; }
+         .cloudy-day .sun { display: block; }
+         .cloudy-day .stars, .cloudy-day .waves, .cloudy-day .leaves, .cloudy-day .petals, .cloudy-day .snowflakes, .cloudy-day .raindrops { display: none; }
+         .cloudy-day .clouds { display: block; }
+         
+         .ocean .sun, .ocean .moon, .ocean .leaf-icon, .ocean .petal-icon, .ocean .snowflake-icon, .ocean .raindrop-icon { display: none; }
+         .ocean .bubble-icon { display: block; }
+         .ocean .stars, .ocean .clouds, .ocean .leaves, .ocean .petals, .ocean .snowflakes, .ocean .raindrops { display: none; }
+         .ocean .waves { display: block; }
+         
+         .forest .sun, .forest .moon, .forest .bubble-icon, .forest .petal-icon, .forest .snowflake-icon, .forest .raindrop-icon { display: none; }
+         .forest .leaf-icon { display: block; }
+         .forest .stars, .forest .clouds, .forest .waves, .forest .petals, .forest .snowflakes, .forest .raindrops { display: none; }
+         .forest .leaves { display: block; }
+         
+         .cherry-blossom .sun, .cherry-blossom .moon, .cherry-blossom .bubble-icon, .cherry-blossom .leaf-icon, .cherry-blossom .snowflake-icon, .cherry-blossom .raindrop-icon { display: none; }
+         .cherry-blossom .petal-icon { display: block; }
+         .cherry-blossom .stars, .cherry-blossom .clouds, .cherry-blossom .waves, .cherry-blossom .leaves, .cherry-blossom .snowflakes, .cherry-blossom .raindrops { display: none; }
+         .cherry-blossom .petals { display: block; }
+         
+         .snow .sun, .snow .moon, .snow .bubble-icon, .snow .leaf-icon, .snow .petal-icon, .snow .raindrop-icon { display: none; }
+         .snow .snowflake-icon { display: block; }
+         .snow .stars, .snow .clouds, .snow .waves, .snow .leaves, .snow .petals, .snow .raindrops { display: none; }
+         .snow .snowflakes { display: block; }
+         
+         .rain .sun, .rain .moon, .rain .bubble-icon, .rain .leaf-icon, .rain .petal-icon, .rain .snowflake-icon { display: none; }
+         .rain .raindrop-icon { display: block; }
+         .rain .stars, .rain .clouds, .rain .waves, .rain .leaves, .rain .petals, .rain .snowflakes { display: none; }
+         .rain .raindrops { display: block; }
+      </style>
+   </head>
+   <body class="starry-night">
+      <!-- Background Elements -->
+      <div class="stars" id="stars"></div>
+      <div class="clouds" id="clouds"></div>
+      <div class="waves" id="waves"></div>
+      <div class="leaves" id="leaves"></div>
+      <div class="petals" id="petals"></div>
+      <div class="snowflakes" id="snowflakes"></div>
+      <div class="raindrops" id="raindrops"></div>
+      
+      <!-- Header Elements -->
+      <div class="top-left-info">
+         <div class="back-button" onclick="goHome()">
+            <span class="back-arrow">←</span>
+            <span class="back-text">Back to Habits</span>
+         </div>
+      </div>
+      
+      <div class="top-right-info">
+         <div class="theme-dropdown" id="theme-dropdown">
+            <button class="theme-dropdown-toggle" onclick="toggleThemeDropdown()" id="theme-dropdown-toggle">
+               <div class="current-theme-icon">
+                  <div class="sun"></div>
+                  <div class="moon"></div>
+                  <div class="bubble-icon"></div>
+                  <div class="leaf-icon"></div>
+                  <div class="petal-icon"></div>
+                  <div class="snowflake-icon"></div>
+                  <div class="raindrop-icon"></div>
+               </div>
+               <span class="dropdown-arrow">▼</span>
+            </button>
+            <div class="theme-dropdown-menu" id="theme-dropdown-menu">
+               <div class="theme-dropdown-option" data-theme="starry-night">
+                  <div class="theme-preview starry-night-preview"></div>
+                  <span class="theme-name">Starry Night</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="cloudy-day">
+                  <div class="theme-preview cloudy-day-preview"></div>
+                  <span class="theme-name">Cloudy Day</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="ocean">
+                  <div class="theme-preview ocean-preview"></div>
+                  <span class="theme-name">Ocean</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="forest">
+                  <div class="theme-preview forest-preview"></div>
+                  <span class="theme-name">Forest</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="cherry-blossom">
+                  <div class="theme-preview cherry-blossom-preview"></div>
+                  <span class="theme-name">Cherry</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="snow">
+                  <div class="theme-preview snow-preview"></div>
+                  <span class="theme-name">Snow</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="rain">
+                  <div class="theme-preview rain-preview"></div>
+                  <span class="theme-name">Rain</span>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <div class="container">
+         <div class="header">
+            <h1>Habit Calendar</h1>
+            <h2>Track your daily progress</h2>
+         </div>
+
+         <!-- Calendar Navigation -->
+         <div class="calendar-nav">
+            <button class="nav-btn" onclick="changeMonth(-1)" id="prev-month">‹</button>
+            <div class="month-year" id="month-year"></div>
+            <button class="nav-btn" onclick="changeMonth(1)" id="next-month">›</button>
+         </div>
+
+         <!-- Calendar Grid -->
+         <div class="calendar-container">
+            <div class="calendar-weekdays">
+               <div class="weekday">Sun</div>
+               <div class="weekday">Mon</div>
+               <div class="weekday">Tue</div>
+               <div class="weekday">Wed</div>
+               <div class="weekday">Thu</div>
+               <div class="weekday">Fri</div>
+               <div class="weekday">Sat</div>
+            </div>
+            <div class="calendar-grid" id="calendar-grid">
+               <!-- Calendar days will be generated here -->
+            </div>
+         </div>
+
+         <!-- Legend -->
+         <div class="legend">
+            <div class="legend-title">Completion Rate</div>
+            <div class="legend-items">
+               <div class="legend-item">
+                  <div class="legend-color" data-level="none"></div>
+                  <span>No data</span>
+               </div>
+               <div class="legend-item">
+                  <div class="legend-color" data-level="low"></div>
+                  <span>0-33%</span>
+               </div>
+               <div class="legend-item">
+                  <div class="legend-color" data-level="medium"></div>
+                  <span>34-66%</span>
+               </div>
+               <div class="legend-item">
+                  <div class="legend-color" data-level="high"></div>
+                  <span>67-100%</span>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Day Details Modal -->
+      <div class="modal-overlay" id="day-details-modal">
+         <div class="modal day-details-modal">
+            <div class="modal-header">
+               <h3 id="day-details-date"></h3>
+               <button class="close-btn" onclick="closeDayDetails()">×</button>
+            </div>
+            <div class="modal-content">
+               <div class="completion-summary" id="completion-summary"></div>
+               <div class="habits-breakdown" id="habits-breakdown"></div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Tooltip -->
+      <div class="tooltip" id="tooltip">
+         <div class="tooltip-content" id="tooltip-content"></div>
+      </div>
+   </body>
+</html>
