@@ -53,8 +53,8 @@ function getCompletionLevel(dateStr) {
   const percentage = (completedCount / totalCount) * 100;
   
   if (percentage === 0) return 'low';
-  if (percentage <= 33) return 'low';
-  if (percentage <= 66) return 'medium';
+  if (percentage <= 50) return 'low';
+  if (percentage <= 80) return 'medium';
   return 'high';
 }
 
