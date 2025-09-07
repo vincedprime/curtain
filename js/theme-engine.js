@@ -248,7 +248,7 @@ class ThemeEngine {
    * Clear all background elements
    */
   clearBackgroundElements() {
-    const containers = ['stars', 'clouds', 'waves', 'leaves', 'petals', 'snowflakes', 'raindrops'];
+    const containers = ['stars', 'clouds', 'waves', 'leaves', 'petals', 'snowflakes', 'raindrops', 'panels'];
     containers.forEach(id => {
       const container = document.getElementById(id);
       if (container && container.children.length > 0) {
@@ -282,6 +282,9 @@ class ThemeEngine {
         break;
       case 'raindrops':
         this.generateRaindrops(config);
+        break;
+      case 'panels':
+        this.generatePanels(config);
         break;
     }
   }
@@ -432,6 +435,41 @@ class ThemeEngine {
       raindrop.style.animationDelay = Math.random() * 2 + 's';
       raindrop.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
       container.appendChild(raindrop);
+    }
+  }
+
+  /**
+   * Generate comic book panels effect
+   */
+  generatePanels(config = {}) {
+    const container = document.getElementById('panels');
+    if (!container) return;
+    
+    const count = config.count || 8;
+    const opacity = config.opacity || 0.1;
+    
+    for (let i = 0; i < count; i++) {
+      const panel = document.createElement('div');
+      panel.className = 'manga-panel';
+      
+      // Create different panel shapes and sizes
+      const width = 100 + Math.random() * 200;
+      const height = 80 + Math.random() * 120;
+      const rotation = (Math.random() - 0.5) * 30; // -15 to 15 degrees
+      
+      panel.style.position = 'absolute';
+      panel.style.width = width + 'px';
+      panel.style.height = height + 'px';
+      panel.style.left = Math.random() * (window.innerWidth - width) + 'px';
+      panel.style.top = Math.random() * (window.innerHeight - height) + 'px';
+      panel.style.border = '3px solid #212529';
+      panel.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+      panel.style.transform = `rotate(${rotation}deg)`;
+      panel.style.borderRadius = '10px';
+      panel.style.zIndex = '-1';
+      panel.style.pointerEvents = 'none';
+      
+      container.appendChild(panel);
     }
   }
 

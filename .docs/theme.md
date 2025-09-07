@@ -7,7 +7,8 @@
 - **Forest** - Green gradient with nature elements
 - **Cherry Blossom** - Dark gradient with petal animations
 - **Snow** - Cool winter gradient with falling snowflakes
-- **Rain** - Stormy gradient with animated raindrops 
+- **Rain** - Stormy gradient with animated raindrops
+- **Manga** - Comic book style with black borders and panels
 
 ## UI Components and Theme Changes
 
@@ -20,6 +21,7 @@
 - **Cherry Blossom**: Pink gradient (`#fdf2f8` to `#fce7f3`) with floating petals
 - **Snow**: Cool winter gradient (`#f0f9ff` to `#e0f2fe`) with falling snowflakes which increases and decreases by time
 - **Rain**: Stormy gradient (`#374151` to `#1f2937`) with animated raindrops which increases and decreases by time
+- **Manga**: Light gradient (`#f8f9fa` to `#e9ecef`) with comic book panel overlays
 
 ### 2. Theme Toggle Button - This object be common for all themes
 **Theme Icons - no emoji:**
@@ -30,6 +32,7 @@
 - **Cherry Blossom**: Light pink shade moon icon
 - **Snow**: Snowflake icon
 - **Rain**: Raindrop icon
+- **Manga**: Book icon
 
 ### 3. Header Section
 **Components:** Title, subtitle, description, daily quote
@@ -42,6 +45,7 @@
 - **Cherry Blossom**: Deep pink text (`#be185d`) on light background
 - **Snow**: Dark blue text (`#1e3a8a`) with cool gray subtitle (`#475569`)
 - **Rain**: Light gray text (`#e5e7eb`) with soft white subtitle (`#f3f4f6`)
+- **Manga**: Bold black text (`#212529`) with gray subtitle (`#6c757d`)
 
 ### 4. Date Info Box
 **Theme Variations:**
@@ -52,6 +56,7 @@
 - **Cherry Blossom**: Light pink background (`rgba(252, 231, 243, 0.8)`) with pink border
 - **Snow**: Cool white background (`rgba(240, 249, 255, 0.9)`) with ice blue border
 - **Rain**: Dark gray background (`rgba(55, 65, 81, 0.8)`) with storm blue border
+- **Manga**: White background (`#ffffff`) with thick black border and comic book shadow
 
 ### 5. Add Habit Section
 **Components:** Input field, Add button
@@ -64,6 +69,7 @@
 - **Cherry Blossom**: Pink accents, soft pink highlights
 - **Snow**: Cool white input (`#f8fafc`) with ice blue focus border (`#0ea5e9`)
 - **Rain**: Dark gray input (`#374151`) with storm blue focus border (`#3b82f6`)
+- **Manga**: White input with thick black border and comic book styling
 
 **Add Button Styling:**
 - **Starry Night**: Blue gradient (`#38bdf8` to `#0ea5e9`) with white text and subtle glow
@@ -73,6 +79,7 @@
 - **Cherry Blossom**: Pink gradient (`#ec4899` to `#db2777`) with white text and soft glow
 - **Snow**: Ice blue gradient (`#0ea5e9` to `#0284c7`) with white text and crystal glow
 - **Rain**: Storm gradient (`#3b82f6` to `#1d4ed8`) with white text and lightning shadow
+- **Manga**: Red background (`#dc3545`) with white text, thick black border and comic book shadow
 
 ### 6. Habit Templates
 **Components:** Quick add buttons
@@ -85,6 +92,7 @@
 - **Cherry Blossom**: Pink borders with petal-like effects
 - **Snow**: Ice blue borders (`#0ea5e9`) with frosty hover (`#e0f2fe`)
 - **Rain**: Storm gray borders (`#6b7280`) with misty hover (`#4b5563`)
+- **Manga**: Thick black borders (`#212529`) with comic book styling
 
 ### 7. Progress Section
 **Components:** Progress bar, progress text, streak counter
@@ -97,6 +105,7 @@
 - **Cherry Blossom**: Pink gradient (`#ec4899` to `#db2777`)
 - **Snow**: Ice gradient (`#0ea5e9` to `#0284c7`)
 - **Rain**: Storm gradient (`#3b82f6` to `#1d4ed8`)
+- **Manga**: Red solid color (`#dc3545`)
 
 **Streak Counter:**
 - **Starry Night**: Orange background (`#f97316`) with fire emoji
@@ -106,6 +115,7 @@
 - **Cherry Blossom**: Pink background with blossom emoji
 - **Snow**: Ice blue background (`#0ea5e9`) with snowflake emoji
 - **Rain**: Storm blue background (`#3b82f6`) with cloud emoji
+- **Manga**: Yellow background (`#ffc107`) with explosion emoji
 
 ### 8. Habit Items
 **Components:** Checkbox, text, delete button
@@ -118,6 +128,7 @@
 - **Cherry Blossom**: Soft pink backgrounds with deeper pink accents
 - **Snow**: Cool white backgrounds (`#f8fafc`) with ice blue completed state (`#dbeafe`)
 - **Rain**: Dark gray backgrounds (`#374151`) with storm blue completed state (`#1e3a8a`)
+- **Manga**: White backgrounds with thick black borders, green completed state (`#28a745`)
 
 ### 9. Action Buttons
 **Components:** Reset button, Delete All button
@@ -130,6 +141,7 @@
 - **Cherry Blossom**: Pink and deeper pink variants
 - **Snow**: Ice blue reset (`#0ea5e9`) and red delete (`#dc2626`)
 - **Rain**: Storm gray reset (`#6b7280`) and red delete (`#dc2626`)
+- **Manga**: Gray reset (`#495057`) and red delete (`#dc2626`) with comic book styling
 
 ### 10. Modals
 **Components:** Delete confirmation, alert modal, confirm modal
@@ -142,6 +154,7 @@
 - **Cherry Blossom**: Light pink with deeper pink accents
 - **Snow**: Cool white background (`#f8fafc`) with ice blue accents
 - **Rain**: Dark gray background (`#374151`) with storm blue accents
+- **Manga**: White background with thick black borders and comic book shadow
 
 ### 11. Footer Info
 **Component:** Information text at bottom
@@ -154,6 +167,7 @@
 - **Cherry Blossom**: Light pink background with deep pink text
 - **Snow**: Cool white background (`rgba(240, 249, 255, 0.6)`) with dark blue text
 - **Rain**: Dark gray background (`rgba(55, 65, 81, 0.6)`) with light gray text
+- **Manga**: White background with thick black border and gray text
 
 ### 12. Animated Background Elements
 
@@ -165,6 +179,7 @@
 - **Cherry Blossom**: Falling pink petals, gentle wind effects, soft glows around elements
 - **Snow**: Falling snowflakes of various sizes, gentle drift patterns, frost sparkles
 - **Rain**: Diagonal raindrops falling at varying speeds, puddle ripple effects, mist particles
+- **Manga**: Comic book panels scattered across background, speech bubble effects, action lines
 
 ### 13. Completion Animation
 **Theme-Specific Celebrations:**
@@ -175,6 +190,7 @@
 - **Cherry Blossom**: Petal shower with pink/white colors
 - **Snow**: Snowflake burst with crystalline ice particles
 - **Rain**: Lightning flash effect with electric blue sparks
+- **Manga**: Comic book explosion with "BAM!" effect and action burst
 
 ## Implementation Strategy
 
@@ -187,7 +203,7 @@
 ## Storage Structure
 ```javascript
 {
-  selectedTheme: 'starry-night' | 'cloudy-day' | 'ocean' | 'forest' | 'cherry-blossom' | 'snow' | 'rain',
+  selectedTheme: 'starry-night' | 'cloudy-day' | 'ocean' | 'forest' | 'cherry-blossom' | 'snow' | 'rain' | 'manga',
   // ... existing habit data
 }
 ```

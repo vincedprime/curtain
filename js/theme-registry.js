@@ -44,6 +44,12 @@ const THEME_REGISTRY = {
     category: 'storm',
     preview: '#374151',
     pluginPath: './themes/rain.js'
+  },
+  'manga': {
+    name: 'Manga',
+    category: 'manga',
+    preview: '#1a1a1a',
+    pluginPath: './themes/manga.js'
   }
 };
 

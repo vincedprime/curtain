@@ -17,6 +17,7 @@
       <script src="themes/cherry-blossom.js"></script>
       <script src="themes/snow.js"></script>
       <script src="themes/rain.js"></script>
+      <script src="themes/manga.js"></script>
       <style>
          /* Theme-specific visibility rules - dynamically managed by theme engine */
          .starry-night .sun, .starry-night .bubble-icon, .starry-night .leaf-icon, .starry-night .petal-icon, .starry-night .snowflake-icon, .starry-night .raindrop-icon { display: none; }
@@ -53,6 +54,11 @@
          .rain .raindrop-icon { display: block; }
          .rain .stars, .rain .clouds, .rain .waves, .rain .leaves, .rain .petals, .rain .snowflakes { display: none; }
          .rain .raindrops { display: block; }
+         
+         .manga .sun, .manga .moon, .manga .bubble-icon, .manga .leaf-icon, .manga .petal-icon, .manga .snowflake-icon, .manga .raindrop-icon { display: none; }
+         .manga .book-icon { display: block; }
+         .manga .stars, .manga .clouds, .manga .waves, .manga .leaves, .manga .petals, .manga .snowflakes, .manga .raindrops { display: none; }
+         .manga .panels { display: block; }
       </style>
    </head>
    <body class="starry-night">
@@ -64,6 +70,7 @@
       <div class="petals" id="petals"></div>
       <div class="snowflakes" id="snowflakes"></div>
       <div class="raindrops" id="raindrops"></div>
+      <div class="panels" id="panels"></div>
       
       <!-- Header Elements -->
       <div class="top-left-info">
@@ -84,6 +91,7 @@
                   <div class="petal-icon"></div>
                   <div class="snowflake-icon"></div>
                   <div class="raindrop-icon"></div>
+                  <div class="book-icon"></div>
                </div>
                <span class="dropdown-arrow">▼</span>
             </button>
@@ -115,6 +123,10 @@
                <div class="theme-dropdown-option" data-theme="rain">
                   <div class="theme-preview rain-preview"></div>
                   <span class="theme-name">Rain</span>
+               </div>
+               <div class="theme-dropdown-option" data-theme="manga">
+                  <div class="theme-preview manga-preview"></div>
+                  <span class="theme-name">Manga</span>
                </div>
             </div>
          </div>
