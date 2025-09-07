@@ -345,7 +345,7 @@ class ThemeEngine {
     for (let i = 0; i < bubbleCount; i++) {
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      const size = 4 + Math.random() * 12;
+      const size = 4 + Math.random() * 20;
       bubble.style.width = size + 'px';
       bubble.style.height = size + 'px';
       bubble.style.left = Math.random() * 100 + '%';
