@@ -3,10 +3,11 @@ import { useTheme } from '../lib/ThemeContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trash2, Plus, Calendar, RotateCcw } from 'lucide-react';
+import { AlertModal, ConfirmModal } from '@/components/ui/modal';
+import Calendar from './Calendar';
+import { Trash2, Plus, RotateCcw, Sun, Moon, Waves, Leaf, Flower, Snowflake, Droplets } from 'lucide-react';
 
 interface Habit {
   id: number;
@@ -32,7 +33,20 @@ const dailyQuotes = [
 ];
 
 const HabitTracker: React.FC = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, themeEngine } = useTheme();
+  
+  // Add error boundary for debugging
+  if (!themeEngine) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Loading...</h1>
+          <p className="text-gray-400">Initializing theme engine...</p>
+        </div>
+      </div>
+    );
+  }
+  
   const [habits, setHabits] = useState<Habit[]>([]);
   const [newHabit, setNewHabit] = useState('');
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -41,6 +55,11 @@ const HabitTracker: React.FC = () => {
   const [habitToDelete, setHabitToDelete] = useState<number | null>(null);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
+  const [showCompletionOverlay, setShowCompletionOverlay] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState('');
+  const [confirmCallback, setConfirmCallback] = useState<((result: boolean) => void) | null>(null);
+  const [showCalendar, setShowCalendar] = useState(false);
 
   // Load habits from localStorage on component mount
   useEffect(() => {
@@ -137,12 +156,6 @@ const HabitTracker: React.FC = () => {
 
   const displayCurrentDate = () => {
     const today = new Date();
-    const options: Intl.DateTimeFormatOptions = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    };
     setCurrentDate(today);
   };
 
@@ -234,43 +247,97 @@ const HabitTracker: React.FC = () => {
 
   const deleteAllHabits = () => {
     if (habits.length === 0) return;
-    if (window.confirm('Are you sure you want to delete all habits? This action cannot be undone.')) {
-      setHabits([]);
-      saveHabits([]);
+    showConfirm('Are you sure you want to delete all habits? This action cannot be undone.', (confirmed) => {
+      if (confirmed) {
+        setHabits([]);
+        saveHabits([]);
+      }
+    });
+  };
+
+  const updateProgress = (triggeredByUser = true) => {
+    const total = habits.length;
+    const completed = habits.filter(h => h.completed).length;
+    
+    // Check for completion animation
+    if (total > 0 && completed === total && triggeredByUser) {
+      setTimeout(() => {
+        showCompletionAnimation();
+      }, 500); // Delay to allow for visual feedback
     }
   };
 
-  const updateProgress = () => {
-    // Progress is calculated in the render method
+  const showCompletionAnimation = () => {
+    setShowCompletionOverlay(true);
+    
+    // Auto-hide after 4 seconds
+    setTimeout(() => {
+      setShowCompletionOverlay(false);
+    }, 4000);
   };
 
   const showAlertMessage = (message: string) => {
     setAlertMessage(message);
     setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 3000);
   };
+
+  const showConfirm = (message: string, callback: (result: boolean) => void) => {
+    setConfirmMessage(message);
+    setConfirmCallback(() => callback);
+    setShowConfirmModal(true);
+  };
+
 
   const openCalendar = () => {
     saveToHistoricalData();
-    // Navigate to calendar - for now just show alert
-    alert('Calendar navigation would go here');
+    setShowCalendar(true);
+  };
+
+  const goBackToHabits = () => {
+    setShowCalendar(false);
+  };
+
+  const getThemeIcon = (themeName: string) => {
+    switch (themeName) {
+      case 'starry-night':
+        return <Moon className="h-4 w-4" />;
+      case 'cloudy-day':
+        return <Sun className="h-4 w-4" />;
+      case 'ocean':
+        return <Waves className="h-4 w-4" />;
+      case 'forest':
+        return <Leaf className="h-4 w-4" />;
+      case 'cherry-blossom':
+        return <Flower className="h-4 w-4" />;
+      case 'snow':
+        return <Snowflake className="h-4 w-4" />;
+      case 'rain':
+        return <Droplets className="h-4 w-4" />;
+      default:
+        return <Moon className="h-4 w-4" />;
+    }
   };
 
   const totalHabits = habits.length;
   const completedHabits = habits.filter(h => h.completed).length;
   const progressPercentage = totalHabits > 0 ? (completedHabits / totalHabits) * 100 : 0;
 
+  // Show calendar if calendar view is active
+  if (showCalendar) {
+    return <Calendar onGoBack={goBackToHabits} />;
+  }
+
   return (
     <div className="min-h-screen" style={{ background: 'var(--theme-background, linear-gradient(to top, #0f0f0f, #1a1a2e))' }}>
       {/* Background Elements */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="stars"></div>
-        <div className="clouds"></div>
-        <div className="waves"></div>
-        <div className="leaves"></div>
-        <div className="petals"></div>
-        <div className="snowflakes"></div>
-        <div className="raindrops"></div>
+        <div id="stars" className="stars"></div>
+        <div id="clouds" className="clouds"></div>
+        <div id="waves" className="waves"></div>
+        <div id="leaves" className="leaves"></div>
+        <div id="petals" className="petals"></div>
+        <div id="snowflakes" className="snowflakes"></div>
+        <div id="raindrops" className="raindrops"></div>
       </div>
 
       {/* Header */}
@@ -295,13 +362,14 @@ const HabitTracker: React.FC = () => {
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="outline" 
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm"
+                className="bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm flex items-center gap-2"
                 style={{ 
                   backgroundColor: 'rgba(255, 255, 255, 0.1)',
                   borderColor: 'rgba(255, 255, 255, 0.2)',
                   color: 'var(--theme-text, #ffffff)'
                 }}
               >
+                {getThemeIcon(theme)}
                 Change Theme
               </Button>
             </DropdownMenuTrigger>
@@ -315,51 +383,58 @@ const HabitTracker: React.FC = () => {
             >
               <DropdownMenuItem 
                 onClick={() => setTheme('starry-night')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('starry-night')}
                 Starry Night
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => setTheme('cloudy-day')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('cloudy-day')}
                 Cloudy Day
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => setTheme('ocean')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('ocean')}
                 Ocean
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => setTheme('forest')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('forest')}
                 Forest
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => setTheme('cherry-blossom')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('cherry-blossom')}
                 Cherry Blossom
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => setTheme('snow')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('snow')}
                 Snow
               </DropdownMenuItem>
               <DropdownMenuItem 
                 onClick={() => setTheme('rain')}
-                className="text-white hover:bg-white/10 focus:bg-white/10"
+                className="text-white hover:bg-white/10 focus:bg-white/10 flex items-center gap-2"
                 style={{ color: 'var(--theme-text, #ffffff)' }}
               >
+                {getThemeIcon('rain')}
                 Rain
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -384,8 +459,22 @@ const HabitTracker: React.FC = () => {
             <Card className="mb-6 bg-white/10 border-white/20 text-white">
               <CardContent className="pt-6">
                 <div className="space-y-4">
-                  <Progress value={progressPercentage} className="h-3" />
-                  <p className="text-center text-lg">
+                  <div 
+                    className="w-full rounded-full h-3 overflow-hidden"
+                    style={{ 
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)'
+                    }}
+                  >
+                    <div 
+                      className="h-full transition-all duration-500 ease-out rounded-full"
+                      style={{ 
+                        width: `${progressPercentage}%`,
+                        background: `linear-gradient(90deg, var(--theme-primary, #38bdf8), var(--theme-success, #22c55e))`
+                      }}
+                    ></div>
+                  </div>
+                  <p className="text-center text-lg font-medium">
                     {completedHabits} of {totalHabits} habits completed
                   </p>
                 </div>
@@ -520,6 +609,49 @@ const HabitTracker: React.FC = () => {
           {alertMessage}
         </div>
       )}
+
+      {/* Completion Overlay */}
+      {showCompletionOverlay && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="text-center p-8 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 transform scale-100 transition-transform">
+            <div className="text-6xl mb-4 animate-bounce">
+              {themeEngine?.getCompletionConfig()?.icon || '🎉'}
+            </div>
+            <h2 className="text-3xl font-bold mb-2 text-white">
+              {themeEngine?.getCompletionConfig()?.title || 'Amazing Work!'}
+            </h2>
+            <p className="text-lg text-white/80">
+              {themeEngine?.getCompletionConfig()?.message || "You've completed all your habits for today!"}
+            </p>
+            <div className="confetti mt-4">
+              {/* Confetti will be generated by theme engine */}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modals */}
+      <ConfirmModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={() => {
+          if (confirmCallback) {
+            confirmCallback(true);
+            setConfirmCallback(null);
+          }
+        }}
+        message={confirmMessage}
+        variant="destructive"
+        confirmText="Delete All"
+        cancelText="Cancel"
+      />
+
+      <AlertModal
+        isOpen={showAlert}
+        onClose={() => setShowAlert(false)}
+        message={alertMessage}
+        title="Alert"
+      />
     </div>
   );
 };

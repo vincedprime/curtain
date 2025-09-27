@@ -2,18 +2,18 @@ const forest = {
   name: 'Mystic Forest',
   category: 'green',
   icon: 'leaf',
-  background: 'linear-gradient(to top, #064e3b, #166534)',
+  background: 'linear-gradient(to bottom, #14532d, #166534)',
   colors: {
     primary: '#22c55e',
     secondary: '#16a34a',
     text: '#dcfce7',
     textSecondary: '#bbf7d0',
     accent: '#15803d',
-    'streak-background': 'rgba(249, 115, 22, 0.1)',
+    'streak-background': 'rgba(34, 197, 94, 0.1)',
     success: '#22c55e',
     danger: '#dc2626',
     warning: '#f59e0b',
-    info: '#10b981',
+    info: '#3b82f6',
   },
   typography: {
     fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
@@ -35,13 +35,13 @@ const forest = {
   animations: {
     leaves: {
       count: 20,
-      fallSpeed: '8s',
+      speed: '8s',
     },
   },
   completion: {
-    icon: '🌳',
-    title: 'Growing Strong!',
-    message: 'Your habits are flourishing like a mighty forest!',
+    icon: '🌲',
+    title: 'Forest Victory!',
+    message: "You've grown through all your habits like a mighty tree!",
   },
   confetti: {
     colors: ['#22c55e', '#16a34a', '#15803d', '#dcfce7'],
@@ -71,7 +71,7 @@ const forest = {
       background: '#15803d',
     },
     'progress-fill': {
-      background: 'linear-gradient(90deg, #10b981, #059669)',
+      background: 'linear-gradient(90deg, #22c55e, #16a34a)',
     },
     'streak-counter': {
       background: 'linear-gradient(135deg, #22c55e, #16a34a)',
